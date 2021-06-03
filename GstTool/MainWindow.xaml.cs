@@ -20,17 +20,26 @@ namespace GstTool
             
             Loaded += (sender, args) =>
             {
-                var pipeline = (Pipeline) Parse.Launch("udpsrc port=5004 ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin ! textoverlay text=\"xx科技\" valignment=bottom halignment=left font-desc=\"微软雅黑, 22\" shaded-background=no ! timeoverlay halignment=left valignment=top ! d3dvideosink sync=false async=false");
+                var pipeline = (Pipeline) Parse.Launch(
+                    "udpsrc ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin ! " +
+                    "tee name=t ! queue leaky=1 ! clockoverlay ! d3dvideosink sync=false async=false t. ! queue ! " +
+                    "videoconvert ! x264enc ! mpegtsmux ! filesink location=e:/h3.mp4"
+                    );
+                // var pipeline = (Pipeline) Parse.Launch(
+                //     "udpsrc port=5004 ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin " +
+                //     "! textoverlay text=\"xx科技\" valignment=bottom halignment=left font-desc=\"微软雅黑, 22\" " +
+                //     "shaded-background=no ! timeoverlay halignment=left valignment=top ! d3dvideosink sync=false async=false"
+                // );
                 //var pipeline = (Pipeline) Parse.Launch("videotestsrc pattern=0 ! videoconvert ! timeoverlay ! d3dvideosink");
                 //var pipeline = (Pipeline) Parse.Launch("playbin uri=http://stream.iqilu.com/vod_bag_2016//2020/02/16/903BE158056C44fcA9524B118A5BF230/903BE158056C44fcA9524B118A5BF230_H264_mp4_500K.mp4");
 
                 // subscribe to the messaging system of the bus and pipeline so we can monitor status as we go
                 // var bus = pipeline.Bus;
                 // bus.AddSignalWatch();
-                // bus.Message += Bus_Message;
+                // bus.Message += OnBusMessage;
 
                 // bus.EnableSyncMessageEmission();
-                // bus.SyncMessage += Bus_SyncMessage;
+                // bus.SyncMessage += OnBusSyncMessage;
                 
                 var overlay= pipeline.GetByInterface(VideoOverlayAdapter.GType);
                 var adapter = new VideoOverlayAdapter(overlay.Handle)
@@ -43,7 +52,7 @@ namespace GstTool
             };
         }
         
-        private void Bus_SyncMessage(object o, SyncMessageArgs args)
+        private void OnBusSyncMessage(object o, SyncMessageArgs args)
         {
             if (Gst.Video.Global.IsVideoOverlayPrepareWindowHandleMessage(args.Message))
             {
@@ -67,7 +76,7 @@ namespace GstTool
             }
         }
 
-        private void Bus_Message(object o, MessageArgs args)
+        private void OnBusMessage(object o, MessageArgs args)
         {
             var msg = args.Message;
             
