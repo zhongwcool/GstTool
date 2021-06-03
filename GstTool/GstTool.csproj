@@ -2,8 +2,27 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net5.0-windows</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <UseWPF>true</UseWPF>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="GstSharp" Version="1.18.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Reference Include="Microsoft.DwayneNeed, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>libs\Microsoft.DwayneNeed.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.DwayneNeed.Win32, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+            <HintPath>libs\Microsoft.DwayneNeed.Win32.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Windows.Forms" />
+      <Reference Include="WindowsFormsIntegration" />
+    </ItemGroup>
 
 </Project>

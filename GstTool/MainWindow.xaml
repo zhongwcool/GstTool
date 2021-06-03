@@ -4,9 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GstTool"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:interop="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+    <Grid Background="Coral">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1" Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap"/>
+            
+        <interop:AirspaceDecorator Grid.Column="0" AirspaceMode="Redirect" IsInputRedirectionEnabled="True"
+                                   IsOutputRedirectionEnabled="True">
+            <WindowsFormsHost>
+                <forms:Panel x:Name="VideoPanel" Dock="Fill" />
+            </WindowsFormsHost>
+        </interop:AirspaceDecorator>
     </Grid>
 </Window>
