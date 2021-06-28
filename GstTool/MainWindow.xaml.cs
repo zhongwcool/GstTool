@@ -21,8 +21,7 @@ namespace GstTool
 
         private Pipeline _pipeline;
 
-        //private Element tee;
-        private Element _videoConvert;
+        private Element _tee;
 
         public MainWindow()
         {
@@ -53,23 +52,23 @@ namespace GstTool
                 var sourceBuffer = ElementFactory.Make("rtpjitterbuffer", "source_buffer");
                 var sourceDepay = ElementFactory.Make("rtph264depay", "source_depay");
                 var sourceDecode = ElementFactory.Make("decodebin", "source_decode");
-                // tee = ElementFactory.Make("tee", "tee");
-                // var videoQueue = ElementFactory.Make("queue", "video_queue");
-                // var videoOverlay = ElementFactory.Make("clockoverlay", "video_overlay");
-                _videoConvert = ElementFactory.Make("videoconvert", "csp");
+                _tee = ElementFactory.Make("tee", "tee");
+                var videoQueue = ElementFactory.Make("queue", "video_queue");
+                var videoOverlay = ElementFactory.Make("clockoverlay", "video_overlay");
+                var videoConvert = ElementFactory.Make("videoconvert", "csp");
                 var videoSink = ElementFactory.Make("d3dvideosink", "video_sink");
-                // var fileQueue = ElementFactory.Make("queue", "file_queue");
-                // var fileConvert = ElementFactory.Make("videoconvert", "file_convert");
-                // var fileEncode = ElementFactory.Make("x264enc", "file_encode");
-                // var fileMux = ElementFactory.Make("mpegtsmux", "file_mux");
-                // var fileSink = ElementFactory.Make("filesink", "file_sink");
+                var fileQueue = ElementFactory.Make("queue", "file_queue");
+                var fileConvert = ElementFactory.Make("videoconvert", "file_convert");
+                var fileEncode = ElementFactory.Make("x264enc", "file_encode");
+                var fileMux = ElementFactory.Make("mpegtsmux", "file_mux");
+                var fileSink = ElementFactory.Make("filesink", "file_sink");
 
                 _pipeline = new Pipeline("test-pipeline");
 
                 if (new[]
                 {
-                    source, sourceBuffer, sourceDepay, sourceDecode, _videoConvert,
-                    videoSink
+                    source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoConvert,
+                    videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink
                 }.Any(e => e == null))
                 {
                     "Not all elements could be created".PrintErr();
@@ -77,15 +76,17 @@ namespace GstTool
                 }
 
                 source["caps"] = new Caps("application/x-rtp");
-                // fileSink["location"] = "e:/h6.mp4";
-                // videoQueue["leaky"] = 1;
-                // fileQueue["leaky"] = 1;
+                fileSink["location"] = "e:/h6.mp4";
+                videoQueue["leaky"] = 1;
+                fileQueue["leaky"] = 1;
 
-                _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _videoConvert, videoSink);
+                _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue,
+                    videoConvert, videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink);
 
                 /* Link all elements that can be automatically linked because they have "Always" pads */
                 if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
-                    !Element.Link(_videoConvert, videoSink))
+                    !Element.Link(videoQueue, videoConvert, videoSink) ||
+                    !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
                 {
                     "Elements could not be linked".PrintErr();
                     return;
@@ -93,10 +94,9 @@ namespace GstTool
 
                 sourceDecode.PadAdded += OnPadAdded;
 
-                /*
-                var teeVideoPad = tee.GetRequestPad("src_%u");
+                var teeVideoPad = _tee.GetRequestPad("src_%u");
                 Debug.WriteLine($"Obtained request pad {teeVideoPad.Name} for video branch.");
-                var teeFilePad = tee.GetRequestPad("src_%u"); // from gst-inspect
+                var teeFilePad = _tee.GetRequestPad("src_%u"); // from gst-inspect
                 Debug.WriteLine($"Obtained request pad {teeFilePad.Name} for file branch.");
 
                 var queueVideoPad = videoQueue.GetStaticPad("sink");
@@ -108,7 +108,6 @@ namespace GstTool
                     "Tee could not be linked".PrintErr();
                     return;
                 }
-                */
 
                 // subscribe to the messaging system of the bus and pipeline so we can monitor status as we go
                 var bus = _pipeline.Bus;
@@ -155,7 +154,7 @@ namespace GstTool
 
             if (newPadType.StartsWith("video/x-raw"))
             {
-                var sinkPad = _videoConvert.GetStaticPad("sink");
+                var sinkPad = _tee.GetStaticPad("sink");
                 Debug.WriteLine($"Received new pad '{newPad.Name}' from '{src.Name}':");
 
                 if (sinkPad.IsLinked)
