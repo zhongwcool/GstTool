@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GstTool/Utils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
     </list>
@@ -26,6 +25,8 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/29A6C194-5F57-4474-95FC-AD42118554C7/0a/ddd75b0e/Debug.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/bd/0c6c68e0/Element.cs" root0="SKIP_HIGHLIGHTING" />
@@ -94,7 +95,7 @@
       <workItem from="1624409475040" duration="18911000" />
       <workItem from="1624499062920" duration="11585000" />
       <workItem from="1624582503587" duration="14593000" />
-      <workItem from="1624841506246" duration="1750000" />
+      <workItem from="1624841506246" duration="16464000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -117,7 +118,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622708054481</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="动态pipeline实现">
+      <created>1624847478130</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1624847478130</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,28 +147,32 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="first commit" />
     <MESSAGE value="how to stream a camera via gst" />
     <MESSAGE value="recoding the stream while playing" />
-    <option name="LAST_COMMIT_MESSAGE" value="recoding the stream while playing" />
+    <MESSAGE value="动态pipeline实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="动态pipeline实现" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/GstTool/MainWindow.xaml.cs</url>
-          <line>130</line>
-          <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="134" containingFunctionPresentation="method 'OnBusSyncMessage'">
+          <line>162</line>
+          <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="151" containingFunctionPresentation="method 'OnPadAdded'">
             <startOffsets>
-              <option value="6447" />
+              <option value="7328" />
             </startOffsets>
             <endOffsets>
-              <option value="6493" />
+              <option value="7359" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="12" />
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
