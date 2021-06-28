@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GstTool/Utils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
     </list>
@@ -16,8 +17,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/27/faa22c74/Debug.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/bd/0c6c68e0/Element.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <changedPaths>
+      <option value="$PROJECT_DIR$/GstTool/Utils.cs" />
+      <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
+    </changedPaths>
   </component>
   <component name="ProjectId" id="1tQSw9Y1lOHJRyp0OFn170CdF7X" />
   <component name="ProjectViewState">
@@ -26,6 +43,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34994584" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30010834" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -33,6 +52,7 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -64,7 +84,17 @@
       <option name="presentableId" value="Default" />
       <updated>1622700056608</updated>
       <workItem from="1622700065480" duration="2934000" />
-      <workItem from="1622703059766" duration="4842000" />
+      <workItem from="1622703059766" duration="7136000" />
+      <workItem from="1622772935354" duration="9215000" />
+      <workItem from="1623026795561" duration="595000" />
+      <workItem from="1623028750421" duration="3017000" />
+      <workItem from="1623045231145" duration="10461000" />
+      <workItem from="1624240443921" duration="10944000" />
+      <workItem from="1624323395318" duration="11299000" />
+      <workItem from="1624409475040" duration="18911000" />
+      <workItem from="1624499062920" duration="11585000" />
+      <workItem from="1624582503587" duration="14593000" />
+      <workItem from="1624841506246" duration="1750000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -80,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622705625640</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="recoding the stream while playing">
+      <created>1622708054481</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1622708054481</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -89,11 +126,43 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="first commit" />
     <MESSAGE value="how to stream a camera via gst" />
-    <option name="LAST_COMMIT_MESSAGE" value="how to stream a camera via gst" />
+    <MESSAGE value="recoding the stream while playing" />
+    <option name="LAST_COMMIT_MESSAGE" value="recoding the stream while playing" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/GstTool/MainWindow.xaml.cs</url>
+          <line>130</line>
+          <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="134" containingFunctionPresentation="method 'OnBusSyncMessage'">
+            <startOffsets>
+              <option value="6447" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6493" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

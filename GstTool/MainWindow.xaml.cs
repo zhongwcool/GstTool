@@ -1,65 +1,135 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using GLib;
 using Gst;
 using Gst.Video;
+using Application = Gst.Application;
 using Debug = System.Diagnostics.Debug;
+using Global = Gst.Video.Global;
 
 namespace GstTool
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            
-            Gst.Application.Init();
-            var mainLoop = new GLib.MainLoop();
-            System.Threading.ThreadPool.QueueUserWorkItem(x => mainLoop.Run());
-            
+
+            Application.Init();
+            var mainLoop = new MainLoop();
+            ThreadPool.QueueUserWorkItem(x => mainLoop.Run());
+
             Loaded += (sender, args) =>
             {
-                var pipeline = (Pipeline) Parse.Launch(
-                    "udpsrc ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin ! " +
-                    "tee name=t ! queue leaky=1 ! clockoverlay ! d3dvideosink sync=false async=false t. ! queue ! " +
-                    "videoconvert ! x264enc ! mpegtsmux ! filesink location=e:/h3.mp4"
-                    );
-                // var pipeline = (Pipeline) Parse.Launch(
-                //     "udpsrc port=5004 ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin " +
-                //     "! textoverlay text=\"xx科技\" valignment=bottom halignment=left font-desc=\"微软雅黑, 22\" " +
-                //     "shaded-background=no ! timeoverlay halignment=left valignment=top ! d3dvideosink sync=false async=false"
-                // );
-                //var pipeline = (Pipeline) Parse.Launch("videotestsrc pattern=0 ! videoconvert ! timeoverlay ! d3dvideosink");
-                //var pipeline = (Pipeline) Parse.Launch("playbin uri=http://stream.iqilu.com/vod_bag_2016//2020/02/16/903BE158056C44fcA9524B118A5BF230/903BE158056C44fcA9524B118A5BF230_H264_mp4_500K.mp4");
+                // Launch Method
+                //  var pipeline = (Pipeline) Parse.Launch(
+                //      "udpsrc ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin ! " +
+                //      "tee name=t ! queue leaky=1 ! clockoverlay ! d3dvideosink sync=false async=false t. ! queue ! " +
+                //      "videoconvert ! x264enc ! mpegtsmux ! filesink location=e:/h3.mp4"
+                //      );
+                //  var pipeline = (Pipeline) Parse.Launch(
+                //      "udpsrc port=5004 ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin " +
+                //      "! textoverlay text=\"xx科技\" valignment=bottom halignment=left font-desc=\"微软雅黑, 22\" " +
+                //      "shaded-background=no ! timeoverlay halignment=left valignment=top ! d3dvideosink sync=false async=false"
+                //  );
+                // var pipeline = (Pipeline) Parse.Launch("videotestsrc pattern=0 ! videoconvert ! timeoverlay ! d3dvideosink");
+                // var pipeline = (Pipeline) Parse.Launch("playbin uri=http://stream.iqilu.com/vod_bag_2016//2020/02/16/903BE158056C44fcA9524B118A5BF230/903BE158056C44fcA9524B118A5BF230_H264_mp4_500K.mp4");
+
+                // ElementFactory Method
+                var source = ElementFactory.Make("videotestsrc", "video_source");
+                var sourceBuffer = ElementFactory.Make("rtpjitterbuffer", "source_buffer");
+                var sourceDepay = ElementFactory.Make("rtph264depay", "source_depay");
+                var sourceDecode = ElementFactory.Make("decodebin", "source_decode");
+                var tee = ElementFactory.Make("tee", "tee");
+                var videoQueue = ElementFactory.Make("queue", "video_queue");
+                var videoOverlay = ElementFactory.Make("clockoverlay", "video_overlay");
+                var videoConvert = ElementFactory.Make("videoconvert", "csp");
+                var videoSink = ElementFactory.Make("d3dvideosink", "video_sink");
+                var fileQueue = ElementFactory.Make("queue", "file_queue");
+                var fileConvert = ElementFactory.Make("videoconvert", "file_convert");
+                var fileEncode = ElementFactory.Make("x264enc", "file_encode");
+                var fileMux = ElementFactory.Make("mpegtsmux", "file_mux");
+                var fileSink = ElementFactory.Make("filesink", "file_sink");
+
+                var pipeline = new Pipeline("test-pipeline");
+
+                if (new[]
+                {
+                    source, tee, videoQueue, videoOverlay, videoConvert, videoSink, fileQueue, fileConvert, fileEncode,
+                    fileMux, fileSink
+                }.Any(e => e == null))
+                {
+                    "Not all elements could be created".PrintErr();
+                    return;
+                }
+
+                source["pattern"] = 22;
+                fileSink["location"] = "e:/h6.mp4";
+                videoQueue["leaky"] = 1;
+                fileQueue["leaky"] = 1;
+
+                pipeline.Add(source, tee, videoQueue, videoOverlay, videoConvert, videoSink, fileQueue, fileConvert,
+                    fileEncode, fileMux, fileSink);
+
+                /* Link all elements that can be automatically linked because they have "Always" pads */
+                if (!source.Link(tee) ||
+                    !Element.Link(videoQueue, videoOverlay, videoConvert, videoSink) ||
+                    !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
+                {
+                    "Elements could not be linked".PrintErr();
+                    return;
+                }
+
+                var teeVideoPad = tee.GetRequestPad("src_%u");
+                Debug.WriteLine($"Obtained request pad {teeVideoPad.Name} for video branch.");
+                var teeFilePad = tee.GetRequestPad("src_%u"); // from gst-inspect
+                Debug.WriteLine($"Obtained request pad {teeFilePad.Name} for file branch.");
+
+                var queueVideoPad = videoQueue.GetStaticPad("sink");
+                var queueFilePad = fileQueue.GetStaticPad("sink");
+
+                if (teeVideoPad.Link(queueVideoPad) != PadLinkReturn.Ok ||
+                    teeFilePad.Link(queueFilePad) != PadLinkReturn.Ok)
+                {
+                    "Tee could not be linked".PrintErr();
+                    return;
+                }
 
                 // subscribe to the messaging system of the bus and pipeline so we can monitor status as we go
-                // var bus = pipeline.Bus;
-                // bus.AddSignalWatch();
-                // bus.Message += OnBusMessage;
+                var bus = pipeline.Bus;
+                bus.AddSignalWatch();
+                bus.Message += OnBusMessage;
+                bus.EnableSyncMessageEmission();
+                bus.SyncMessage += OnBusSyncMessage;
 
-                // bus.EnableSyncMessageEmission();
-                // bus.SyncMessage += OnBusSyncMessage;
-                
-                var overlay= pipeline.GetByInterface(VideoOverlayAdapter.GType);
+                // Start playing the pipeline
+                var overlay = pipeline.GetByInterface(VideoOverlayAdapter.GType);
                 var adapter = new VideoOverlayAdapter(overlay.Handle)
                 {
                     WindowHandle = VideoPanel.Handle
                 };
                 adapter.HandleEvents(true);
 
-                pipeline.SetState(State.Playing);
+                // finally set the state of the pipeline running so we can get data
+                var ret = pipeline.SetState(State.Null);
+                Debug.WriteLine("SetStateNULL returned: " + ret);
+                ret = pipeline.SetState(State.Ready);
+                Debug.WriteLine("SetStateReady returned: " + ret);
+                ret = pipeline.SetState(State.Playing);
+                Debug.WriteLine("SetStatePlaying returned: " + ret);
             };
         }
-        
-        private void OnBusSyncMessage(object o, SyncMessageArgs args)
-        {
-            if (Gst.Video.Global.IsVideoOverlayPrepareWindowHandleMessage(args.Message))
-            {
-                Debug.WriteLine("Bus_SyncMessage: Message prepare window handle received by: " + args.Message.Src.Name +
-                                " " + args.Message.Src.GetType());
-                Debug.WriteLine("");
 
+        private static void OnBusSyncMessage(object o, SyncMessageArgs args)
+        {
+            if (Global.IsVideoOverlayPrepareWindowHandleMessage(args.Message)) return;
+
+            if (args.Message.Src is VideoSink or Bin)
                 try
                 {
                     args.Message.Src["force-aspect-ratio"] = true;
@@ -68,42 +138,40 @@ namespace GstTool
                 {
                     Debug.WriteLine(exception);
                 }
-            }
-            else
-            {
-                args.Message.ParseInfo(out _, out var info);
-                Debug.WriteLine("Bus_SyncMessage: " + args.Message.Type + " - " + info);
-            }
         }
 
-        private void OnBusMessage(object o, MessageArgs args)
+        private static void OnBusMessage(object o, MessageArgs args)
         {
             var msg = args.Message;
-            
+
             switch (msg.Type)
             {
+                case MessageType.Eos:
+                    Console.WriteLine("End of stream reached");
+                    // Free resources
+                    //pipeline.SetState(State.Null);
+                    break;
                 case MessageType.Error:
-                    Debug.WriteLine("Bus_Message: Error received: " + msg);
+                    Debug.WriteLine("OnBusMessage: Error received: " + msg);
                     break;
                 case MessageType.StreamStatus:
                     msg.ParseStreamStatus(out var status, out var theOwner);
-                    Debug.WriteLine("Bus_Message: 流状态: " + status + " ; Owner is: " +
-                                    theOwner.Name);
+                    Debug.WriteLine("OnBusMessage: 流状态: " + status + " ; Owner is: " + theOwner.Name);
                     break;
                 case MessageType.StateChanged:
                     msg.ParseStateChanged(out var oldState, out var newState, out var pendingState);
                     if (newState == State.Paused) args.RetVal = false;
-                    Debug.WriteLine("Bus_Message: 链路状态 from {0} to {1}: ; Pending: {2}",
-                        Element.StateGetName(oldState), 
+                    Debug.WriteLine("OnBusMessage: 链路状态 from {0} to {1} ; Pending: {2}",
+                        Element.StateGetName(oldState),
                         Element.StateGetName(newState),
                         Element.StateGetName(pendingState)
-                        );
+                    );
                     break;
                 case MessageType.Element:
-                    Debug.WriteLine("Bus_Message: Element message: {0}", args.Message.ToString());
+                    Debug.WriteLine($"OnBusMessage: Element message: {args.Message}");
                     break;
                 default:
-                    Debug.WriteLine("Bus_Message: 未处理: {0}", msg.Type);
+                    Debug.WriteLine($"OnBusMessage: 未处理: {msg.Type}");
                     break;
             }
 
