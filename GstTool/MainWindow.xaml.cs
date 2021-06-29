@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using GLib;
@@ -9,6 +10,7 @@ using Application = Gst.Application;
 using Debug = System.Diagnostics.Debug;
 using EventArgs = System.EventArgs;
 using Global = Gst.Video.Global;
+using Value = GLib.Value;
 
 namespace GstTool
 {
@@ -112,9 +114,9 @@ namespace GstTool
                 // subscribe to the messaging system of the bus and pipeline so we can monitor status as we go
                 var bus = _pipeline.Bus;
                 bus.AddSignalWatch();
-                bus.Message += OnBusMessage;
+                bus.Message += Bus_Message;
                 bus.EnableSyncMessageEmission();
-                bus.SyncMessage += OnBusSyncMessage;
+                bus.SyncMessage += Bus_SyncMessage;
 
                 // Start playing the pipeline
                 var overlay = _pipeline.GetByInterface(VideoOverlayAdapter.GType);
@@ -125,9 +127,7 @@ namespace GstTool
                 adapter.HandleEvents(true);
 
                 // finally set the state of the pipeline running so we can get data
-                var ret = _pipeline.SetState(State.Null);
-                Debug.WriteLine("SetStateNULL returned: " + ret);
-                ret = _pipeline.SetState(State.Ready);
+                var ret = _pipeline.SetState(State.Ready);
                 Debug.WriteLine("SetStateReady returned: " + ret);
                 ret = _pipeline.SetState(State.Playing);
                 Debug.WriteLine("SetStatePlaying returned: " + ret);
@@ -177,22 +177,23 @@ namespace GstTool
             newPadCaps.Dispose();
         }
 
-        private static void OnBusSyncMessage(object o, SyncMessageArgs args)
+        private static void Bus_SyncMessage(object o, SyncMessageArgs args)
         {
             if (!Global.IsVideoOverlayPrepareWindowHandleMessage(args.Message)) return;
 
-            if (args.Message.Src is VideoSink or Bin)
-                try
-                {
-                    args.Message.Src["force-aspect-ratio"] = true;
-                }
-                catch (PropertyNotFoundException exception)
-                {
-                    Debug.WriteLine(exception);
-                }
+            if (args.Message.Src is not (VideoSink or Bin)) return;
+
+            try
+            {
+                args.Message.Src["force-aspect-ratio"] = true;
+            }
+            catch (PropertyNotFoundException exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
 
-        private static void OnBusMessage(object o, MessageArgs args)
+        private void Bus_Message(object o, MessageArgs args)
         {
             var msg = args.Message;
 
@@ -200,26 +201,66 @@ namespace GstTool
             {
                 case MessageType.Eos:
                     Console.WriteLine("End of stream reached");
+                    if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.Error:
-                    Debug.WriteLine("OnBusMessage: Error received: " + msg);
+                    Debug.WriteLine("Bus_Message: Error received: " + msg);
+                    if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.StreamStatus:
                     msg.ParseStreamStatus(out var status, out var theOwner);
-                    Debug.WriteLine("OnBusMessage: 流状态: " + status + " ; Owner is: " + theOwner.Name);
+                    Debug.WriteLine("Bus_Message: 流状态: " + status + " ; Owner is: " + theOwner.Name);
                     break;
                 case MessageType.StateChanged:
                     msg.ParseStateChanged(out var oldState, out var newState, out var pendingState);
                     if (newState == State.Paused) args.RetVal = false;
-                    Debug.WriteLine("OnBusMessage: 链路状态 from {0} to {1} ; Pending: {2}",
+                    Debug.WriteLine("Bus_Message: 链路状态 from {0} to {1} ; Pending: {2}",
                         Element.StateGetName(oldState),
                         Element.StateGetName(newState),
                         Element.StateGetName(pendingState)
                     );
                     break;
+                case MessageType.Element:
+                    HandleElement(msg);
+                    break;
             }
 
             args.RetVal = true;
+        }
+
+        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern double g_value_get_double(ref Value val);
+
+        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void g_value_array_free(IntPtr raw);
+
+        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr g_value_get_boxed(ref Value val);
+
+        [DllImport("glib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void g_free(IntPtr mem);
+
+        [DllImport("gstreamer-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr gst_structure_get_value(IntPtr raw, IntPtr fieldname);
+
+        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void g_value_unset(ref object val);
+
+        private static void HandleElement(Message msg)
+        {
+            Console.Write(".");
+            var msgStruct = msg.Structure;
+            var elName = msgStruct.Name;
+            if (elName != "level") return;
+            var rmsValue = msgStruct.GetValue("rms");
+            var handle = g_value_get_boxed(ref rmsValue);
+            g_value_array_free(handle);
+            /*
+            at Gst.MiniObject.gst_mini_object_unref(IntPtr raw)
+               at Gst.MiniObject.FinalizerInfo.Handler()
+               at GLib.Timeout.TimeoutProxy.Handler()
+               at GLib.MainLoop.g_main_loop_run(IntPtr loop)
+            */
         }
     }
 }
