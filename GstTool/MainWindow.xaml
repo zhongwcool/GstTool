@@ -3,18 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GstTool"
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:interop="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="Coral">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="1" Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap"/>
-            
+        <Grid Grid.Column="1">
+            <TextBlock Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap" />
+
+            <StackPanel Height="200">
+                <Button x:Name="ButtonPrepare" IsEnabled="True" Content="准备" Click="ButtonReady_OnClick" Height="100" />
+
+                <Button x:Name="ButtonPlay" IsEnabled="False" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
+            </StackPanel>
+        </Grid>
+
         <interop:AirspaceDecorator Grid.Column="0" AirspaceMode="Redirect" IsInputRedirectionEnabled="True"
                                    IsOutputRedirectionEnabled="True">
             <WindowsFormsHost>
