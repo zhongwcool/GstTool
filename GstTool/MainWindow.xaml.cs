@@ -9,7 +9,6 @@ using Gst.Video;
 using Application = Gst.Application;
 using Debug = System.Diagnostics.Debug;
 using EventArgs = System.EventArgs;
-using Global = Gst.Video.Global;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
 using Value = GLib.Value;
 
@@ -98,24 +97,6 @@ namespace GstTool
             newPadCaps.Dispose();
         }
 
-        private void Bus_SyncMessage(object sender, SyncMessageArgs args)
-        {
-            // Only care about window ID binding requests.
-            var msg = args.Message;
-            if (!Global.IsVideoOverlayPrepareWindowHandleMessage(msg)) return;
-            // Get source of message.
-            if (msg.Src is not (VideoSink or Bin)) return;
-
-            try
-            {
-                msg.Src["force-aspect-ratio"] = true;
-            }
-            catch (PropertyNotFoundException exception)
-            {
-                Debug.WriteLine(exception);
-            }
-        }
-
         private void Bus_Message(object sender, MessageArgs args)
         {
             var msg = args.Message;
@@ -186,7 +167,7 @@ namespace GstTool
             */
         }
 
-        private void ButtonReady_OnClick(object sender, RoutedEventArgs e)
+        private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
         {
             // ElementFactory Method
             var source = ElementFactory.Make("udpsrc");
@@ -256,8 +237,6 @@ namespace GstTool
             var bus = _pipeline.Bus;
             bus.AddSignalWatch();
             bus.Message += Bus_Message;
-            //bus.EnableSyncMessageEmission();
-            //bus.SyncMessage += Bus_SyncMessage;
 
             // Start playing the pipeline
             var overlay = _pipeline.GetByInterface(VideoOverlayAdapter.GType);
@@ -267,19 +246,13 @@ namespace GstTool
             };
             adapter.HandleEvents(true);
 
-            ButtonPrepare.IsEnabled = false;
-            ButtonPlay.IsEnabled = true;
-        }
-
-        private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
-        {
-            ButtonPlay.IsEnabled = false;
-
             // finally set the state of the pipeline running so we can get data
             //var ret = _pipeline.SetState(State.Ready);
             //Debug.WriteLine("SetStateReady returned: " + ret);
             var ret = _pipeline.SetState(State.Playing);
             Debug.WriteLine("SetStatePlaying returned: " + ret);
+
+            ButtonPrepare.IsEnabled = false;
         }
     }
 }

@@ -15,11 +15,7 @@
         <Grid Grid.Column="1">
             <TextBlock Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap" />
 
-            <StackPanel Height="200">
-                <Button x:Name="ButtonPrepare" IsEnabled="True" Content="准备" Click="ButtonReady_OnClick" Height="100" />
-
-                <Button x:Name="ButtonPlay" IsEnabled="False" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
-            </StackPanel>
+            <Button x:Name="ButtonPrepare" IsEnabled="True" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
         </Grid>
 
         <interop:AirspaceDecorator Grid.Column="0" AirspaceMode="Redirect" IsInputRedirectionEnabled="True"
