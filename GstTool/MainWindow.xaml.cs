@@ -29,8 +29,9 @@ namespace GstTool
         {
             InitializeComponent();
 
+            /* Initialize GStreamer */
             Application.Init();
-            // initialize object manager. otherwise bus subscription will fail
+            /* initialize object manager. otherwise bus subscription will fail */
             ObjectManager.Initialize();
 
             _mainLoop = new MainLoop();
@@ -169,7 +170,7 @@ namespace GstTool
 
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
         {
-            // ElementFactory Method
+            /* Create the elements */
             var source = ElementFactory.Make("udpsrc");
             var sourceBuffer = ElementFactory.Make("rtpjitterbuffer");
             var sourceDepay = ElementFactory.Make("rtph264depay");
@@ -185,13 +186,14 @@ namespace GstTool
             var fileMux = ElementFactory.Make("mpegtsmux");
             var fileSink = ElementFactory.Make("filesink");
 
+            /* Create the empty pipeline */
             _pipeline = new Pipeline("test-pipeline");
 
             if (new[]
             {
                 source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoOverlay, videoConvert,
                 videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink
-            }.Any(e => e == null))
+            }.Any(element => element == null))
             {
                 "Not all elements could be created".PrintErr();
                 return;
@@ -233,12 +235,12 @@ namespace GstTool
                 return;
             }
 
-            // subscribe to the messaging system of the bus and pipeline so we can monitor status as we go
+            /* subscribe to the messaging system of the bus and pipeline so we can monitor status as we go */
             var bus = _pipeline.Bus;
             bus.AddSignalWatch();
             bus.Message += Bus_Message;
 
-            // Start playing the pipeline
+            /* start playing the pipeline */
             var overlay = _pipeline.GetByInterface(VideoOverlayAdapter.GType);
             var adapter = new VideoOverlayAdapter(overlay.Handle)
             {
@@ -246,7 +248,7 @@ namespace GstTool
             };
             adapter.HandleEvents(true);
 
-            // finally set the state of the pipeline running so we can get data
+            /* finally set the state of the pipeline running so we can get data */
             //var ret = _pipeline.SetState(State.Ready);
             //Debug.WriteLine("SetStateReady returned: " + ret);
             var ret = _pipeline.SetState(State.Playing);
