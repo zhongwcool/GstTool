@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,17 +29,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/bd/0c6c68e0/Element.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/GstTool/Utils.cs" />
       <option value="$PROJECT_DIR$/GstTool/App.xaml.cs" />
-      <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml" />
+      <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tQSw9Y1lOHJRyp0OFn170CdF7X" />
@@ -105,7 +101,8 @@
       <workItem from="1624841506246" duration="20463000" />
       <workItem from="1624927876098" duration="9346000" />
       <workItem from="1625014247597" duration="12491000" />
-      <workItem from="1625100212907" duration="14525000" />
+      <workItem from="1625100212907" duration="16707000" />
+      <workItem from="1625188288145" duration="758000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -163,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625126241620</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="移除冗余流程">
+      <created>1625131199546</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1625131199546</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +200,8 @@
     <MESSAGE value="动态tee:实现播放和录制" />
     <MESSAGE value="尝试减少莫名的AccessViolationException" />
     <MESSAGE value="暂存比较稳定版本" />
-    <option name="LAST_COMMIT_MESSAGE" value="暂存比较稳定版本" />
+    <MESSAGE value="移除冗余流程" />
+    <option name="LAST_COMMIT_MESSAGE" value="移除冗余流程" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

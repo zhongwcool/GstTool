@@ -189,7 +189,7 @@ namespace GstTool
 
             if (new[]
             {
-                source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoConvert,
+                source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoOverlay, videoConvert,
                 videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink
             }.Any(e => e == null))
             {
@@ -204,12 +204,12 @@ namespace GstTool
             videoQueue["leaky"] = 1;
             fileQueue["leaky"] = 1;
 
-            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue,
+            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoOverlay,
                 videoConvert, videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
-                !Element.Link(videoQueue, videoConvert, videoSink) ||
+                !Element.Link(videoQueue, videoOverlay, videoConvert, videoSink) ||
                 !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
             {
                 "Elements could not be linked".PrintErr();
