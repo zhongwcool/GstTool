@@ -22,8 +22,13 @@ namespace GstTool
         private readonly MainLoop _mainLoop;
 
         private Pipeline _pipeline;
+        private Pad _queueVideoPad;
 
         private Element _tee;
+
+        private Pad _teeVideoPad;
+
+        private Element _videoQueue;
 
         public MainWindow()
         {
@@ -176,7 +181,7 @@ namespace GstTool
             var sourceDepay = ElementFactory.Make("rtph264depay");
             var sourceDecode = ElementFactory.Make("decodebin");
             _tee = ElementFactory.Make("tee");
-            var videoQueue = ElementFactory.Make("queue");
+            _videoQueue = ElementFactory.Make("queue");
             var videoOverlay = ElementFactory.Make("clockoverlay");
             var videoConvert = ElementFactory.Make("videoconvert");
             var videoSink = ElementFactory.Make("d3dvideosink");
@@ -191,7 +196,7 @@ namespace GstTool
 
             if (new[]
             {
-                source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoOverlay, videoConvert,
+                source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay, videoConvert,
                 videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink
             }.Any(element => element == null))
             {
@@ -203,15 +208,15 @@ namespace GstTool
             fileSink["location"] = "./h6.mp4";
             videoSink["sync"] = false;
             videoSink["async"] = false;
-            videoQueue["leaky"] = 1;
+            _videoQueue["leaky"] = 1;
             fileQueue["leaky"] = 1;
 
-            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, videoQueue, videoOverlay,
+            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay,
                 videoConvert, videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
-                !Element.Link(videoQueue, videoOverlay, videoConvert, videoSink) ||
+                !Element.Link(_videoQueue, videoOverlay, videoConvert, videoSink) ||
                 !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
             {
                 "Elements could not be linked".PrintErr();
@@ -220,15 +225,15 @@ namespace GstTool
 
             sourceDecode.PadAdded += OnPadAdded;
 
-            var teeVideoPad = _tee.GetRequestPad("src_%u");
-            Debug.WriteLine($"Obtained request pad {teeVideoPad.Name} for video branch.");
+            _teeVideoPad = _tee.GetRequestPad("src_%u");
+            Debug.WriteLine($"Obtained request pad {_teeVideoPad.Name} for video branch.");
             var teeFilePad = _tee.GetRequestPad("src_%u"); // from gst-inspect
             Debug.WriteLine($"Obtained request pad {teeFilePad.Name} for file branch.");
 
-            var queueVideoPad = videoQueue.GetStaticPad("sink");
+            _queueVideoPad = _videoQueue.GetStaticPad("sink");
             var queueFilePad = fileQueue.GetStaticPad("sink");
 
-            if (teeVideoPad.Link(queueVideoPad) != PadLinkReturn.Ok ||
+            if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok ||
                 teeFilePad.Link(queueFilePad) != PadLinkReturn.Ok)
             {
                 "Tee could not be linked".PrintErr();
@@ -255,6 +260,39 @@ namespace GstTool
             Debug.WriteLine("SetStatePlaying returned: " + ret);
 
             ButtonPrepare.IsEnabled = false;
+        }
+
+        private void ButtonShot_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!_teeVideoPad.Unlink(_queueVideoPad))
+            {
+                MessageBox.Show("Failed to Unlink Video Pad.");
+                ButtonLink.IsEnabled = false;
+                return;
+            }
+
+            ButtonLink.IsEnabled = true;
+            ButtonUnlink.IsEnabled = false;
+        }
+
+        private void ButtonLink_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok)
+            {
+                MessageBox.Show("Failed to Link Video Pad.");
+                return;
+            }
+
+            ButtonUnlink.IsEnabled = true;
+            ButtonLink.IsEnabled = false;
         }
     }
 }

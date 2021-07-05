@@ -13,9 +13,21 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="1">
-            <TextBlock Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap" Grid.Row="0" />
 
-            <Button x:Name="ButtonPrepare" IsEnabled="True" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
+            <StackPanel Grid.Row="1">
+                <Button x:Name="ButtonPrepare" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
+                <UniformGrid>
+                    <Button Content="Test" Height="30" Click="ButtonTest_OnClick" />
+                    <Button Content="截图" Height="30" Click="ButtonShot_OnClick" />
+                    <Button Content="Unlink" Height="30" Click="ButtonUnlink_OnClick" x:Name="ButtonUnlink" />
+                    <Button Content="Link" Height="30" Click="ButtonLink_OnClick" x:Name="ButtonLink" IsEnabled="False" />
+                </UniformGrid>
+            </StackPanel>
         </Grid>
 
         <interop:AirspaceDecorator Grid.Column="0" AirspaceMode="Redirect" IsInputRedirectionEnabled="True"
