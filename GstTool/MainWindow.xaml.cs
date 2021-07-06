@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -10,6 +12,8 @@ using Application = Gst.Application;
 using Debug = System.Diagnostics.Debug;
 using EventArgs = System.EventArgs;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 using Value = GLib.Value;
 
 namespace GstTool
@@ -264,10 +268,19 @@ namespace GstTool
 
         private void ButtonShot_OnClick(object sender, RoutedEventArgs e)
         {
+            var bitmap = new Bitmap(VideoPanel.Width, VideoPanel.Height); //实例化一个和窗体一样大的bitmap
+            var point = new Point(0, 0); // 0,0 是左上角
+            point = VideoPanel.PointToScreen(point);
+            var g = Graphics.FromImage(bitmap);
+            g.CompositingQuality = CompositingQuality.HighQuality; //质量设为最高
+            g.CopyFromScreen(point.X, point.Y, 0, 0,
+                new Size(VideoPanel.Width, VideoPanel.Height)); //保存整个窗体为图片
+            bitmap.Save(Utils.GetShotFilename()); //默认保存格式为PNG，保存成jpg格式质量不是很好
         }
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Do Nothing.");
         }
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)

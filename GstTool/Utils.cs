@@ -8,6 +8,14 @@ namespace GstTool
 {
     public static class Utils
     {
+        private const string TimeStampFormatFilenameRecord = "MMdd-HHmmss";
+        private const string TimeStampFormatFilenameShot = "MMdd-HHmmss-fff";
+
+        public static string GetShotFilename(string filepath = "./", string suffix = "png")
+        {
+            return filepath + DateTime.Now.ToString(TimeStampFormatFilenameShot) + "." + suffix;
+        }
+
         public static int PrintErr(this string format, params object[] args)
         {
             var s = string.Format(format, args);
@@ -30,7 +38,7 @@ namespace GstTool
             PrintColor(s, Magenta);
         }
 
-        public static void PrintColor(this string s, ConsoleColor color)
+        private static void PrintColor(this string s, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(s);
