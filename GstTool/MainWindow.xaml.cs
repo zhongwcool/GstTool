@@ -209,7 +209,7 @@ namespace GstTool
             }
 
             source["caps"] = new Caps("application/x-rtp");
-            fileSink["location"] = "./h6.mp4";
+            fileSink["location"] = Utils.GetRecordFilename();
             videoSink["sync"] = false;
             videoSink["async"] = false;
             _videoQueue["leaky"] = 1;

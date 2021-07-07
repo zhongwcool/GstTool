@@ -30,7 +30,7 @@
             </StackPanel>
         </Grid>
 
-        <interop:AirspaceDecorator x:Name="VideoPanelOutline" Grid.Column="0" AirspaceMode="Redirect"
+        <interop:AirspaceDecorator Grid.Column="0" AirspaceMode="Redirect"
                                    IsInputRedirectionEnabled="True"
                                    IsOutputRedirectionEnabled="True">
             <WindowsFormsHost>
