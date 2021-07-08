@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using GLib;
@@ -14,7 +13,6 @@ using EventArgs = System.EventArgs;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
-using Value = GLib.Value;
 
 namespace GstTool
 {
@@ -134,47 +132,9 @@ namespace GstTool
                         Element.StateGetName(pendingState)
                     );
                     break;
-                case MessageType.Element:
-                    HandleElement(msg);
-                    break;
             }
 
             args.RetVal = true;
-        }
-
-        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern double g_value_get_double(ref Value val);
-
-        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void g_value_array_free(IntPtr raw);
-
-        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr g_value_get_boxed(ref Value val);
-
-        [DllImport("glib-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void g_free(IntPtr mem);
-
-        [DllImport("gstreamer-1.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr gst_structure_get_value(IntPtr raw, IntPtr fieldname);
-
-        [DllImport("gobject-2.0-0.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void g_value_unset(ref object val);
-
-        private static void HandleElement(Message msg)
-        {
-            Console.Write(".");
-            var msgStruct = msg.Structure;
-            var elName = msgStruct.Name;
-            if (elName != "level") return;
-            var rmsValue = msgStruct.GetValue("rms");
-            var handle = g_value_get_boxed(ref rmsValue);
-            g_value_array_free(handle);
-            /*
-            at Gst.MiniObject.gst_mini_object_unref(IntPtr raw)
-               at Gst.MiniObject.FinalizerInfo.Handler()
-               at GLib.Timeout.TimeoutProxy.Handler()
-               at GLib.MainLoop.g_main_loop_run(IntPtr loop)
-            */
         }
 
         private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)

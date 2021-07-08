@@ -7,10 +7,18 @@
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <PlatformTarget>x64</PlatformTarget>
+    </PropertyGroup>
+
     <ItemGroup>
-      <PackageReference Include="GstSharp" Version="1.18.0" />
+        <PackageReference Include="GstSharp" Version="1.18.0"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <Reference Include="Microsoft.DwayneNeed, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
             <HintPath>libs\Microsoft.DwayneNeed.dll</HintPath>
