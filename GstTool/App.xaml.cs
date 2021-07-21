@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using GstTool.Util;
+using GstTool.Utils;
 
 namespace GstTool
 {

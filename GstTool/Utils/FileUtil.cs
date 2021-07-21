@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Dynamic;
 using static System.ConsoleColor;
 
-namespace GstTool.Util
+namespace GstTool.Utils
 {
-    public static class Utils
+    public static class FileUtil
     {
         private const string TimeStampFormatFilenameRecord = "MMdd-HHmmss";
         private const string TimeStampFormatFilenameShot = "MMdd-HHmmss-fff";

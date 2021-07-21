@@ -7,10 +7,10 @@ using System.Windows;
 using GLib;
 using Gst;
 using Gst.Video;
-using GstTool.Util;
+using GstTool.Utils;
 using Application = Gst.Application;
 using EventArgs = System.EventArgs;
-using Log = GstTool.Util.Log;
+using Log = GstTool.Utils.Log;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
@@ -167,7 +167,7 @@ namespace GstTool
             }
 
             source["caps"] = new Caps("application/x-rtp");
-            fileSink["location"] = Utils.GetRecordFilename();
+            fileSink["location"] = FileUtil.GetRecordFilename();
             videoSink["sync"] = false;
             videoSink["async"] = false;
             _videoQueue["leaky"] = 1;
@@ -181,7 +181,7 @@ namespace GstTool
                 !Element.Link(_videoQueue, videoOverlay, videoConvert, videoSink) ||
                 !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
             {
-                "Elements could not be linked".PrintErr();
+                Log.D("Elements could not be linked");
                 return;
             }
 
@@ -233,7 +233,7 @@ namespace GstTool
             g.CompositingQuality = CompositingQuality.HighQuality; //质量设为最高
             g.CopyFromScreen(point.X, point.Y, 0, 0,
                 new Size(VideoPanel.Width, VideoPanel.Height)); //保存整个窗体为图片
-            bitmap.Save(Utils.GetShotFilename()); //默认保存格式为PNG，保存成jpg格式质量不是很好
+            bitmap.Save(FileUtil.GetShotFilename()); //默认保存格式为PNG，保存成jpg格式质量不是很好
         }
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)

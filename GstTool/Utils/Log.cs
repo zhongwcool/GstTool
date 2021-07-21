@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace GstTool.Util
+namespace GstTool.Utils
 {
     /**
      * 日志写入组件(**多线程写日志队列，单线程写日志文件**)

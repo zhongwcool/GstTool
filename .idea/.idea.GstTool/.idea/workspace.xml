@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GstTool/Util/Log.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/App.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/Util/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +36,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/bd/0c6c68e0/Element.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/29A6C194-5F57-4474-95FC-AD42118554C7/0a/ddd75b0e/Debug.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -45,10 +44,11 @@
       <option value="$PROJECT_DIR$/.gitignore" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml" />
       <option value="$PROJECT_DIR$/GstTool/Utils.cs" />
-      <option value="$PROJECT_DIR$/GstTool/Utils/Log.cs" />
-      <option value="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" />
       <option value="$PROJECT_DIR$/GstTool/App.xaml.cs" />
       <option value="$PROJECT_DIR$/GstTool/Util/Log.cs" />
+      <option value="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" />
+      <option value="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" />
+      <option value="$PROJECT_DIR$/GstTool/Utils/Log.cs" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
     </changedPaths>
   </component>
@@ -124,7 +124,9 @@
       <workItem from="1626664611600" duration="9512000" />
       <workItem from="1626743707003" duration="7283000" />
       <workItem from="1626830294026" duration="4038000" />
-      <workItem from="1626834991732" duration="360000" />
+      <workItem from="1626834991732" duration="804000" />
+      <workItem from="1626835813020" duration="1382000" />
+      <workItem from="1626837219732" duration="784000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -217,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625715837198</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="增加日志工具">
+      <created>1626835651886</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1626835651887</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,7 +264,8 @@
     <MESSAGE value="调整注释格式" />
     <MESSAGE value="修改录制视频的命名" />
     <MESSAGE value="移除冗余的dll导入" />
-    <option name="LAST_COMMIT_MESSAGE" value="移除冗余的dll导入" />
+    <MESSAGE value="增加日志工具" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加日志工具" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -268,10 +278,10 @@
           <line>90</line>
           <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="90" containingFunctionPresentation="method 'OnPadAdded'">
             <startOffsets>
-              <option value="3343" />
+              <option value="3345" />
             </startOffsets>
             <endOffsets>
-              <option value="3384" />
+              <option value="3386" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />
