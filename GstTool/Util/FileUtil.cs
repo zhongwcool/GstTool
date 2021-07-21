@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Dynamic;
 using static System.ConsoleColor;
 
-namespace GstTool
+namespace GstTool.Util
 {
     public static class Utils
     {
@@ -48,7 +47,7 @@ namespace GstTool
             Console.ForegroundColor = color;
             Console.WriteLine(s);
             Console.ResetColor();
-            Debug.WriteLine(s);
+            Log.D(s);
         }
 
         public static bool HasProperty(this ExpandoObject obj, string propertyName)

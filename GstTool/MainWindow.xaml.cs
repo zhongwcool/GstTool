@@ -7,9 +7,10 @@ using System.Windows;
 using GLib;
 using Gst;
 using Gst.Video;
+using GstTool.Util;
 using Application = Gst.Application;
-using Debug = System.Diagnostics.Debug;
 using EventArgs = System.EventArgs;
+using Log = GstTool.Util.Log;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
@@ -65,7 +66,7 @@ namespace GstTool
         protected override void OnClosed(EventArgs e)
         {
             var ret = _pipeline?.SetState(State.Null);
-            Debug.WriteLine("SetStateNULL returned: " + ret);
+            Log.D($"SetState: NULL returned: {ret}");
             _pipeline?.Dispose();
             _mainLoop.Quit();
             base.OnClosed(e);
@@ -83,23 +84,23 @@ namespace GstTool
             if (newPadType.StartsWith("video/x-raw"))
             {
                 var sinkPad = _tee.GetStaticPad("sink");
-                Debug.WriteLine($"Received new pad '{newPad.Name}' from '{src.Name}':");
+                Log.D($"Received new pad '{newPad.Name}' from '{src.Name}':");
 
                 if (sinkPad.IsLinked)
                 {
-                    Debug.WriteLine("We are already linked, ignoring");
+                    Log.D("We are already linked, ignoring");
                     return;
                 }
 
                 var ret = newPad.Link(sinkPad);
                 if (ret == PadLinkReturn.Ok)
-                    Debug.WriteLine($"Link succeeded type {newPadType}");
+                    Log.D($"Link succeeded type {newPadType}");
                 else
-                    Debug.WriteLine($"Type is {newPadType} but link failed");
+                    Log.D($"Type is {newPadType} but link failed");
             }
             else
             {
-                Debug.WriteLine($"It has type '{newPadType}' which is not raw audio or video. Ignoring.");
+                Log.D($"It has type '{newPadType}' which is not raw audio or video. Ignoring.");
             }
 
             newPadCaps.Dispose();
@@ -116,21 +117,18 @@ namespace GstTool
                     if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.Error:
-                    Debug.WriteLine("Bus_Message: Error received: " + msg);
+                    Log.D($"Bus_Message: Error received: {msg}");
                     if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.StreamStatus:
                     msg.ParseStreamStatus(out var status, out var theOwner);
-                    Debug.WriteLine("Bus_Message: 流状态: " + status + " ; Owner is: " + theOwner.Name);
+                    Log.D($"Bus_Message: 流状态: {status} ; Owner is: {theOwner.Name}");
                     break;
                 case MessageType.StateChanged:
                     msg.ParseStateChanged(out var oldState, out var newState, out var pendingState);
                     if (newState == State.Paused) args.RetVal = false;
-                    Debug.WriteLine("Bus_Message: 链路状态 from {0} to {1} ; Pending: {2}",
-                        Element.StateGetName(oldState),
-                        Element.StateGetName(newState),
-                        Element.StateGetName(pendingState)
-                    );
+                    Log.D($"Bus_Message: 链路状态 from {Element.StateGetName(oldState)} " +
+                          $"to {Element.StateGetName(newState)}; Pending: {Element.StateGetName(pendingState)}");
                     break;
             }
 
@@ -190,9 +188,9 @@ namespace GstTool
             sourceDecode.PadAdded += OnPadAdded;
 
             _teeVideoPad = _tee.GetRequestPad("src_%u");
-            Debug.WriteLine($"Obtained request pad {_teeVideoPad.Name} for video branch.");
+            Log.D($"Obtained request pad {_teeVideoPad.Name} for video branch.");
             var teeFilePad = _tee.GetRequestPad("src_%u"); // from gst-inspect
-            Debug.WriteLine($"Obtained request pad {teeFilePad.Name} for file branch.");
+            Log.D($"Obtained request pad {teeFilePad.Name} for file branch.");
 
             _queueVideoPad = _videoQueue.GetStaticPad("sink");
             var queueFilePad = fileQueue.GetStaticPad("sink");
@@ -200,7 +198,7 @@ namespace GstTool
             if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok ||
                 teeFilePad.Link(queueFilePad) != PadLinkReturn.Ok)
             {
-                "Tee could not be linked".PrintErr();
+                Log.D("Tee could not be linked");
                 return;
             }
 
@@ -219,9 +217,9 @@ namespace GstTool
 
             /* finally set the state of the pipeline running so we can get data */
             //var ret = _pipeline.SetState(State.Ready);
-            //Debug.WriteLine("SetStateReady returned: " + ret);
+            //Log.D("SetStateReady returned: " + ret);
             var ret = _pipeline.SetState(State.Playing);
-            Debug.WriteLine("SetStatePlaying returned: " + ret);
+            Log.D($"SetStatePlaying returned: {ret}");
 
             ButtonPrepare.IsEnabled = false;
         }
