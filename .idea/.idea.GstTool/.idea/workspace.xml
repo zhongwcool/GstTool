@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GstTool/Annotations.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GstTool/Model/Message.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/App.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Util/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,13 +43,15 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/.gitignore" />
-      <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml" />
       <option value="$PROJECT_DIR$/GstTool/Utils.cs" />
       <option value="$PROJECT_DIR$/GstTool/App.xaml.cs" />
       <option value="$PROJECT_DIR$/GstTool/Util/Log.cs" />
       <option value="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" />
       <option value="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" />
       <option value="$PROJECT_DIR$/GstTool/Utils/Log.cs" />
+      <option value="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" />
+      <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml" />
+      <option value="$PROJECT_DIR$/GstTool/Model/Message.cs" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
     </changedPaths>
   </component>
@@ -126,7 +129,9 @@
       <workItem from="1626830294026" duration="4038000" />
       <workItem from="1626834991732" duration="804000" />
       <workItem from="1626835813020" duration="1382000" />
-      <workItem from="1626837219732" duration="784000" />
+      <workItem from="1626837219732" duration="9854000" />
+      <workItem from="1626920009166" duration="4745000" />
+      <workItem from="1626934722052" duration="389000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -226,7 +231,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626835651887</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="调整目录结构">
+      <created>1626838592958</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1626838592958</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,28 +277,10 @@
     <MESSAGE value="修改录制视频的命名" />
     <MESSAGE value="移除冗余的dll导入" />
     <MESSAGE value="增加日志工具" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加日志工具" />
+    <MESSAGE value="调整目录结构" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整目录结构" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/GstTool/MainWindow.xaml.cs</url>
-          <line>90</line>
-          <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="90" containingFunctionPresentation="method 'OnPadAdded'">
-            <startOffsets>
-              <option value="3345" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3386" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

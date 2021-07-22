@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:interop="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
+        xmlns:viewModel="clr-namespace:GstTool.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        MinHeight="500" MinWidth="1000"
+        Height="550" Width="1000"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
+        Title="MainWindow">
     <Grid Background="Coral">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*" />
@@ -20,7 +24,7 @@
             <TextBlock Text="恭喜恭喜 Overlay" FontSize="28" TextWrapping="Wrap" Grid.Row="0" />
 
             <StackPanel Grid.Row="1">
-                <Button x:Name="ButtonPrepare" Content="播放" Click="ButtonPlay_OnClick" Height="100" />
+                <Button x:Name="ButtonPrepare" Content="播放" Height="100" Command="{Binding CommandPlayStream}" />
                 <UniformGrid>
                     <Button Content="Test" Height="30" Click="ButtonTest_OnClick" />
                     <Button Content="截图" Height="30" Click="ButtonShot_OnClick" />

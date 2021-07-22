@@ -1,16 +1,18 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using GalaSoft.MvvmLight.Messaging;
 using GLib;
 using Gst;
 using Gst.Video;
 using GstTool.Utils;
+using GstTool.ViewModel;
 using Application = Gst.Application;
 using EventArgs = System.EventArgs;
 using Log = GstTool.Utils.Log;
+using Message = GstTool.Model.Message;
 using ObjectManager = GtkSharp.GstreamerSharp.ObjectManager;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
@@ -23,19 +25,16 @@ namespace GstTool
     public partial class MainWindow : Window
     {
         private readonly MainLoop _mainLoop;
-
         private Pipeline _pipeline;
         private Pad _queueVideoPad;
-
         private Element _tee;
-
         private Pad _teeVideoPad;
-
         private Element _videoQueue;
 
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = MainViewModel.CreateInstance();
 
             /* Initialize GStreamer */
             Application.Init();
@@ -61,6 +60,9 @@ namespace GstTool
                 // var pipeline = (Pipeline) Parse.Launch("videotestsrc pattern=0 ! videoconvert ! timeoverlay ! d3dvideosink");
                 // var pipeline = (Pipeline) Parse.Launch("playbin uri=http://stream.iqilu.com/vod_bag_2016//2020/02/16/903BE158056C44fcA9524B118A5BF230/903BE158056C44fcA9524B118A5BF230_H264_mp4_500K.mp4");
             };
+
+            //注册消息接收器
+            Messenger.Default.Register<Message>(this, Message.Token.Main, OnMessageHandle);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -70,6 +72,21 @@ namespace GstTool
             _pipeline?.Dispose();
             _mainLoop.Quit();
             base.OnClosed(e);
+        }
+
+        private void OnMessageHandle(Message msg)
+        {
+            switch (msg.Key)
+            {
+                case Message.Main.PlayStream:
+                    OnPlayStream(msg.Msg);
+                    break;
+            }
+        }
+
+        private void OnPlayStream(string msg)
+        {
+            PlayStream();
         }
 
         private void OnPadAdded(object sender, PadAddedArgs args)
@@ -113,7 +130,7 @@ namespace GstTool
             switch (msg.Type)
             {
                 case MessageType.Eos:
-                    Console.WriteLine("End of stream reached");
+                    Log.D("End of stream reached");
                     if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.Error:
@@ -135,7 +152,7 @@ namespace GstTool
             args.RetVal = true;
         }
 
-        private void ButtonPlay_OnClick(object sender, RoutedEventArgs e)
+        private void PlayStream()
         {
             /* Create the elements */
             var source = ElementFactory.Make("udpsrc");
