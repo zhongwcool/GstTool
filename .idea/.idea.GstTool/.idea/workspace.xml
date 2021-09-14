@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GstTool/Annotations.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GstTool/Model/Message.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/Utils/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,10 +33,12 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/bd/0c6c68e0/Element.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/29A6C194-5F57-4474-95FC-AD42118554C7/0a/ddd75b0e/Debug.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -49,9 +49,10 @@
       <option value="$PROJECT_DIR$/GstTool/Util/FileUtil.cs" />
       <option value="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" />
       <option value="$PROJECT_DIR$/GstTool/Utils/Log.cs" />
-      <option value="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml" />
       <option value="$PROJECT_DIR$/GstTool/Model/Message.cs" />
+      <option value="$PROJECT_DIR$/GstTool/GstTool.csproj" />
+      <option value="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" />
       <option value="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" />
     </changedPaths>
   </component>
@@ -132,6 +133,12 @@
       <workItem from="1626837219732" duration="9854000" />
       <workItem from="1626920009166" duration="4745000" />
       <workItem from="1626934722052" duration="389000" />
+      <workItem from="1627692767978" duration="3114000" />
+      <workItem from="1627865370804" duration="1195000" />
+      <workItem from="1629853535692" duration="682000" />
+      <workItem from="1630312784415" duration="10000" />
+      <workItem from="1631597423917" duration="615000" />
+      <workItem from="1631598654377" duration="1485000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>

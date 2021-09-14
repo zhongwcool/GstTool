@@ -3,12 +3,12 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using GalaSoft.MvvmLight.Messaging;
 using GLib;
 using Gst;
 using Gst.Video;
 using GstTool.Utils;
 using GstTool.ViewModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Application = Gst.Application;
 using EventArgs = System.EventArgs;
 using Log = GstTool.Utils.Log;
@@ -62,7 +62,17 @@ namespace GstTool
             };
 
             //注册消息接收器
-            Messenger.Default.Register<Message>(this, Message.Token.Main, OnMessageHandle);
+            WeakReferenceMessenger.Default.Register<Message>(this, OnMessageHandle);
+        }
+
+        private void OnMessageHandle(object recipient, Message message)
+        {
+            switch (message.Key)
+            {
+                case Message.Main.PlayStream:
+                    OnPlayStream(message.Msg);
+                    break;
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -74,16 +84,6 @@ namespace GstTool
             base.OnClosed(e);
         }
 
-        private void OnMessageHandle(Message msg)
-        {
-            switch (msg.Key)
-            {
-                case Message.Main.PlayStream:
-                    OnPlayStream(msg.Msg);
-                    break;
-            }
-        }
-
         private void OnPlayStream(string msg)
         {
             PlayStream();
@@ -91,7 +91,7 @@ namespace GstTool
 
         private void OnPadAdded(object sender, PadAddedArgs args)
         {
-            var src = (Element) sender;
+            var src = (Element)sender;
             var newPad = args.NewPad;
 
             var newPadCaps = newPad.CurrentCaps;

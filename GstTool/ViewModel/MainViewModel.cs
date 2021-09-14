@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using GstTool.Annotations;
 using GstTool.Model;
+using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace GstTool.ViewModel
 {
@@ -24,7 +24,7 @@ namespace GstTool.ViewModel
 
         private static void OnPlayStream(string msg)
         {
-            Messenger.Default.Send(new Message(Message.Main.PlayStream), Message.Token.Main);
+            WeakReferenceMessenger.Default.Send(new Message(Message.Main.PlayStream));
         }
 
 

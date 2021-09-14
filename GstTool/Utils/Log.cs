@@ -32,7 +32,7 @@ namespace GstTool.Utils
         private readonly ConcurrentQueue<LogModel> _logModelQueue = new(); //日志队列      
 
         //对不同类型的日志进行区分合并
-        private readonly LogBuffer _myLogBuffer = new() {StartTime = DateTime.Now};
+        private readonly LogBuffer _myLogBuffer = new() { StartTime = DateTime.Now };
         private readonly Thread _thread;
         private int _currentWriteErrorTime; //当前连续写入错误次数
         private bool _isStart;
@@ -44,8 +44,7 @@ namespace GstTool.Utils
         /// </summary>
         private Log()
         {
-            if (null != _thread) return;
-            _thread = new Thread(RunnableDigest) {IsBackground = true};
+            _thread = new Thread(RunnableDigest) { IsBackground = true };
             _thread.Start();
         }
 
@@ -196,7 +195,7 @@ namespace GstTool.Utils
         /// <param name="tag">Log级别</param>
         private void Write(string content, string tag)
         {
-            _logModelQueue.Enqueue(new LogModel {Msg = content, Tag = tag});
+            _logModelQueue.Enqueue(new LogModel { Msg = content, Tag = tag });
         }
 
         private void Write(LogModel log)
