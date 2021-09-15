@@ -8,8 +8,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Utils/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,12 +31,8 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -138,7 +132,8 @@
       <workItem from="1629853535692" duration="682000" />
       <workItem from="1630312784415" duration="10000" />
       <workItem from="1631597423917" duration="615000" />
-      <workItem from="1631598654377" duration="1485000" />
+      <workItem from="1631598654377" duration="1787000" />
+      <workItem from="1631673134358" duration="4435000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -245,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626838592958</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="使用Microsoft.Toolkit.Mvvm替换MvvmLight">
+      <created>1631616757211</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1631616757211</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,7 +287,8 @@
     <MESSAGE value="移除冗余的dll导入" />
     <MESSAGE value="增加日志工具" />
     <MESSAGE value="调整目录结构" />
-    <option name="LAST_COMMIT_MESSAGE" value="调整目录结构" />
+    <MESSAGE value="使用Microsoft.Toolkit.Mvvm替换MvvmLight" />
+    <option name="LAST_COMMIT_MESSAGE" value="使用Microsoft.Toolkit.Mvvm替换MvvmLight" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

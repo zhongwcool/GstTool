@@ -165,6 +165,7 @@ namespace GstTool
             var videoConvert = ElementFactory.Make("videoconvert");
             var videoSink = ElementFactory.Make("d3dvideosink");
             var fileQueue = ElementFactory.Make("queue");
+            var fileOverlay = ElementFactory.Make("clockoverlay");
             var fileConvert = ElementFactory.Make("videoconvert");
             var fileEncode = ElementFactory.Make("x264enc");
             var fileMux = ElementFactory.Make("mpegtsmux");
@@ -176,7 +177,7 @@ namespace GstTool
             if (new[]
             {
                 source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay, videoConvert,
-                videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink
+                videoSink, fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink
             }.Any(element => element == null))
             {
                 "Not all elements could be created".PrintErr();
@@ -191,12 +192,12 @@ namespace GstTool
             fileQueue["leaky"] = 1;
 
             _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay,
-                videoConvert, videoSink, fileQueue, fileConvert, fileEncode, fileMux, fileSink);
+                videoConvert, videoSink, fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
                 !Element.Link(_videoQueue, videoOverlay, videoConvert, videoSink) ||
-                !Element.Link(fileQueue, fileConvert, fileEncode, fileMux, fileSink))
+                !Element.Link(fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink))
             {
                 Log.D("Elements could not be linked");
                 return;
