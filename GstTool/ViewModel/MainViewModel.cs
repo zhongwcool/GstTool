@@ -1,14 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using GstTool.Annotations;
 using GstTool.Model;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 
 namespace GstTool.ViewModel
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ObservableObject
     {
         private static MainViewModel _instance;
 
@@ -24,20 +22,7 @@ namespace GstTool.ViewModel
 
         private static void OnPlayStream(string msg)
         {
-            WeakReferenceMessenger.Default.Send(new Message(Message.Main.PlayStream));
+            WeakReferenceMessenger.Default.Send(new Message(Message.PlayStream));
         }
-
-
-        #region 继承接口
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
     }
 }

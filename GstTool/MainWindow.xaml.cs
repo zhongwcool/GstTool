@@ -30,6 +30,8 @@ namespace GstTool
         private Element _tee;
         private Pad _teeVideoPad;
         private Element _videoQueue;
+        private Element _videoOverlayClock;
+        private Element _videoOverlayInfo;
 
         public MainWindow()
         {
@@ -69,7 +71,7 @@ namespace GstTool
         {
             switch (message.Key)
             {
-                case Message.Main.PlayStream:
+                case Message.PlayStream:
                     OnPlayStream(message.Msg);
                     break;
             }
@@ -130,21 +132,21 @@ namespace GstTool
             switch (msg.Type)
             {
                 case MessageType.Eos:
-                    Log.D("End of stream reached");
+                    Log.W("End of stream reached");
                     if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.Error:
-                    Log.D($"Bus_Message: Error received: {msg}");
+                    Log.W($"Error received: {msg}");
                     if (_mainLoop.IsRunning) _mainLoop.Quit();
                     break;
                 case MessageType.StreamStatus:
                     msg.ParseStreamStatus(out var status, out var theOwner);
-                    Log.D($"Bus_Message: 流状态: {status} ; Owner is: {theOwner.Name}");
+                    Log.D($"流状态: {status} ; Owner is: {theOwner.Name}");
                     break;
                 case MessageType.StateChanged:
                     msg.ParseStateChanged(out var oldState, out var newState, out var pendingState);
                     if (newState == State.Paused) args.RetVal = false;
-                    Log.D($"Bus_Message: 链路状态 from {Element.StateGetName(oldState)} " +
+                    Log.D($"链路状态 from {Element.StateGetName(oldState)} " +
                           $"to {Element.StateGetName(newState)}; Pending: {Element.StateGetName(pendingState)}");
                     break;
             }
@@ -161,11 +163,13 @@ namespace GstTool
             var sourceDecode = ElementFactory.Make("decodebin");
             _tee = ElementFactory.Make("tee");
             _videoQueue = ElementFactory.Make("queue");
-            var videoOverlay = ElementFactory.Make("clockoverlay");
+            _videoOverlayClock = ElementFactory.Make("clockoverlay");
+            _videoOverlayInfo = ElementFactory.Make("textoverlay");
             var videoConvert = ElementFactory.Make("videoconvert");
             var videoSink = ElementFactory.Make("d3dvideosink");
             var fileQueue = ElementFactory.Make("queue");
-            var fileOverlay = ElementFactory.Make("clockoverlay");
+            var fileOverlayClock = ElementFactory.Make("clockoverlay");
+            var fileOverlayInfo = ElementFactory.Make("textoverlay");
             var fileConvert = ElementFactory.Make("videoconvert");
             var fileEncode = ElementFactory.Make("x264enc");
             var fileMux = ElementFactory.Make("mpegtsmux");
@@ -176,11 +180,13 @@ namespace GstTool
 
             if (new[]
             {
-                source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay, videoConvert,
-                videoSink, fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink
+                source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
+                _videoOverlayInfo,
+                videoConvert, videoSink, fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert, fileEncode, fileMux,
+                fileSink
             }.Any(element => element == null))
             {
-                "Not all elements could be created".PrintErr();
+                Log.E("Not all elements could be created");
                 return;
             }
 
@@ -191,15 +197,26 @@ namespace GstTool
             _videoQueue["leaky"] = 1;
             fileQueue["leaky"] = 1;
 
-            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, videoOverlay,
-                videoConvert, videoSink, fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink);
+            _videoOverlayInfo["text"] =
+                "任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            _videoOverlayInfo["valignment"] = 1;
+            _videoOverlayInfo["halignment"] = 0;
+
+            fileOverlayInfo["text"] =
+                "任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            fileOverlayInfo["valignment"] = 1;
+            fileOverlayInfo["halignment"] = 0;
+
+            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
+                _videoOverlayInfo, videoConvert, videoSink, fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert,
+                fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
-                !Element.Link(_videoQueue, videoOverlay, videoConvert, videoSink) ||
-                !Element.Link(fileQueue, fileOverlay, fileConvert, fileEncode, fileMux, fileSink))
+                !Element.Link(_videoQueue, _videoOverlayInfo, _videoOverlayClock, videoConvert, videoSink) ||
+                !Element.Link(fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink))
             {
-                Log.D("Elements could not be linked");
+                Log.E("Elements could not be linked");
                 return;
             }
 
@@ -216,7 +233,7 @@ namespace GstTool
             if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok ||
                 teeFilePad.Link(queueFilePad) != PadLinkReturn.Ok)
             {
-                Log.D("Tee could not be linked");
+                Log.E("Tee could not be linked");
                 return;
             }
 
@@ -256,7 +273,7 @@ namespace GstTool
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Do Nothing.");
+            _videoOverlayInfo["text"] = "清扬";
         }
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)

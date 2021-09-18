@@ -13,14 +13,6 @@
         public string Msg { get; }
         public object Extra { get; }
 
-        public static class Main
-        {
-            public const string PlayStream = nameof(PlayStream);
-        }
-
-        public static class Token
-        {
-            public const string Main = nameof(Main);
-        }
+        public const string PlayStream = nameof(PlayStream);
     }
 }

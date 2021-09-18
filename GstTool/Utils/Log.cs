@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,27 +21,26 @@ namespace GstTool.Utils
      */
     public class Log
     {
+        private static readonly Log Instance = new();
         private const string TimeStampFormat = "MM-dd HH:mm:ss.fff";
         private const string TimeStampFormatFilename = "yyyy-MM-dd";
-        private const int MaxWriteErrorTime = 10; //最大连续写入错误次数
-        private static readonly Log Instance = new();
+        private bool _isStart;
+        private readonly Thread _thread;
         private static int _maxByteSize = 1024 * 1; //当单个缓存日志达到多少byte时写入文件
         private static int _maxFileSize = 20 * 1024 * 1024; //单个日志文件的大小
         private static int _maxMilliseconds = 10; //最大相隔时间，不管缓存区中的日志大小到不到_maxByteSize都写入硬盘
-        private static bool _enableDebug = true;
+        private const int MaxWriteErrorTime = 10; //最大连续写入错误次数
+        private int _currentWriteErrorTime; //当前连续写入错误次数
+        private string _savePath = Environment.CurrentDirectory + "\\Log\\";
+        private LogModel _tmpLog;
 
         private readonly ConcurrentQueue<LogModel> _logModelQueue = new(); //日志队列      
 
         //对不同类型的日志进行区分合并
         private readonly LogBuffer _myLogBuffer = new() { StartTime = DateTime.Now };
-        private readonly Thread _thread;
-        private int _currentWriteErrorTime; //当前连续写入错误次数
-        private bool _isStart;
-        private string _savePath = Environment.CurrentDirectory + "\\Log\\";
-        private LogModel _tmpLog;
 
         /// <summary>
-        ///     开始写入日志，系统初始化时调用：向磁盘写入日志需要满足同一类型日志条数>=batchCount条或者同一类型日志存在超过maxSecond秒
+        /// 开始写入日志，系统初始化时调用：向磁盘写入日志需要满足同一类型日志条数>=batchCount条或者同一类型日志存在超过maxSecond秒
         /// </summary>
         private Log()
         {
@@ -75,11 +75,6 @@ namespace GstTool.Utils
             _maxMilliseconds = maxMilliseconds;
         }
 
-        public static void EnableDebug(bool enable)
-        {
-            _enableDebug = enable;
-        }
-
         public void AgainStart()
         {
             Instance._isStart = true;
@@ -109,9 +104,10 @@ namespace GstTool.Utils
             _logModelQueue.TryDequeue(out _tmpLog);
             if (_tmpLog == null) return;
 
-            _myLogBuffer.Builder = _myLogBuffer.Builder.AppendFormat("{0} {1} {2}" + Environment.NewLine,
+            _myLogBuffer.Builder = _myLogBuffer.Builder.AppendFormat("{0} {1} {2} {3}" + Environment.NewLine,
                 _tmpLog.CreatedTime.ToString(TimeStampFormat),
                 _tmpLog.Tag,
+                _tmpLog.Operator,
                 _tmpLog.Msg
             );
             _tmpLog = null;
@@ -140,7 +136,7 @@ namespace GstTool.Utils
         }
 
         /// <summary>
-        ///     关闭线程
+        /// 关闭线程
         /// </summary>
         public void Abort()
         {
@@ -148,32 +144,62 @@ namespace GstTool.Utils
             Instance._thread.Abort();
         }
 
+        public static void SetLevel(Level level)
+        {
+            _weight = level;
+        }
+
+        private static Level _weight = Level.W;
+
         public static void D(string content)
         {
-            if (_enableDebug) Instance.Write(content, "D");
+            if (_weight < Level.D) return;
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
+            Instance.Write(content, "D", operator0);
         }
 
         public static void I(Exception exception)
         {
+            if (_weight < Level.I) return;
             var info = GetExceptionInfo(exception);
-            Instance.Write(info, "I");
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
+            Instance.Write(info, "I", operator0);
         }
 
         public static void I(string content)
         {
-            Instance.Write(content, "I");
+            if (_weight < Level.I) return;
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
+            Instance.Write(content, "I", operator0);
+        }
+
+        public static void W(string content)
+        {
+            if (_weight < Level.W) return;
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
+            Instance.Write(content, "W", operator0);
         }
 
         public static void E(Exception exception)
         {
+            if (_weight < Level.E) return;
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
             var info = GetExceptionInfo(exception);
-            Instance.Write(info, "E");
+            Instance.Write(info, "E", operator0);
             Instance.Flush();
         }
 
         public static void E(string content)
         {
-            Instance.Write(content, "E");
+            if (_weight < Level.E) return;
+            var frames = new StackTrace().GetFrames();
+            var operator0 = frames?.Length < 2 ? "Null" : frames?[1].GetMethod()?.Name;
+            Instance.Write(content, "E", operator0);
             Instance.Flush();
         }
 
@@ -182,25 +208,27 @@ namespace GstTool.Utils
             if (null == exception) return "exception is null";
             var builder = new StringBuilder();
             builder.AppendLine("异常信息：" + exception.Message);
-            builder.AppendLine(" 异常源：" + exception.Source);
-            builder.AppendLine(" 调用堆栈：\n   " + exception.StackTrace.Trim());
-            builder.AppendLine(" 触发方法：" + exception.TargetSite);
+            builder.AppendLine("   " + exception.GetType().FullName);
+            builder.AppendLine("   " + exception.StackTrace.Trim());
+            builder.AppendLine("   " + exception.TargetSite);
+
             return builder.ToString();
         }
 
         /// <summary>
-        ///     日志写入
+        /// 日志写入
         /// </summary>
         /// <param name="content">日志内容</param>
         /// <param name="tag">Log级别</param>
-        private void Write(string content, string tag)
+        /// <param name="operator0">调用方法</param>
+        private void Write(string content, string tag, string operator0 = "Null")
         {
-            _logModelQueue.Enqueue(new LogModel { Msg = content, Tag = tag });
+            _logModelQueue.Enqueue(new LogModel { Msg = content, Tag = tag, Operator = operator0 });
         }
 
-        private void Write(LogModel log)
+        private void Write(LogModel lm)
         {
-            _logModelQueue.Enqueue(log);
+            _logModelQueue.Enqueue(lm);
         }
 
         private bool Write2File(string log)
@@ -276,7 +304,7 @@ namespace GstTool.Utils
     }
 
     [Serializable]
-    public class LogModel
+    internal class LogModel
     {
         public LogModel()
         {
@@ -300,5 +328,13 @@ namespace GstTool.Utils
         public int Count { get; set; }
         public DateTime StartTime { get; set; }
         public StringBuilder Builder { get; set; }
+    }
+
+    public enum Level
+    {
+        E = 0,
+        W,
+        I,
+        D
     }
 }
