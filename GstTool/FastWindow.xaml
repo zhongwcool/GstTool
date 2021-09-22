@@ -1,0 +1,27 @@
+﻿<Window x:Class="GstTool.FastWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:GstTool"
+        xmlns:interop="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:viewModel="clr-namespace:GstTool.ViewModel"
+        mc:Ignorable="d"
+        MinHeight="750" MinWidth="1280"
+        Height="750" Width="1280"
+        d:DataContext="{d:DesignInstance viewModel:FastViewModel}"
+        Title="Fast Test" >
+    <Grid>
+        <interop:AirspaceDecorator AirspaceMode="Redirect" IsInputRedirectionEnabled="True"
+                                   IsOutputRedirectionEnabled="True">
+            <WindowsFormsHost>
+                <forms:Panel x:Name="VideoPanel" Dock="Fill" />
+            </WindowsFormsHost>
+        </interop:AirspaceDecorator>
+        
+        <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Test" Height="30" Click="ButtonTest_OnClick" />
+        </WrapPanel>
+    </Grid>
+</Window>

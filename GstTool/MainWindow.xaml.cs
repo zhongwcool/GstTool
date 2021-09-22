@@ -10,6 +10,7 @@ using GstTool.Utils;
 using GstTool.ViewModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using Application = Gst.Application;
+using DateTime = System.DateTime;
 using EventArgs = System.EventArgs;
 using Log = GstTool.Utils.Log;
 using Message = GstTool.Model.Message;
@@ -32,6 +33,7 @@ namespace GstTool
         private Element _videoQueue;
         private Element _videoOverlayClock;
         private Element _videoOverlayInfo;
+        private Element _fileOverlayInfo;
 
         public MainWindow()
         {
@@ -45,23 +47,6 @@ namespace GstTool
 
             _mainLoop = new MainLoop();
             ThreadPool.QueueUserWorkItem(x => _mainLoop.Run());
-
-            Loaded += (sender, args) =>
-            {
-                // Launch Method
-                //  var pipeline = (Pipeline) Parse.Launch(
-                //      "udpsrc ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin ! " +
-                //      "tee name=t ! queue leaky=1 ! clockoverlay ! d3dvideosink sync=false async=false t. ! queue ! " +
-                //      "videoconvert ! x264enc ! mpegtsmux ! filesink location=e:/h3.mp4"
-                //      );
-                //  var pipeline = (Pipeline) Parse.Launch(
-                //      "udpsrc port=5004 ! application/x-rtp ! rtpjitterbuffer ! rtph264depay ! decodebin " +
-                //      "! textoverlay text=\"xx科技\" valignment=bottom halignment=left font-desc=\"微软雅黑, 22\" " +
-                //      "shaded-background=no ! timeoverlay halignment=left valignment=top ! d3dvideosink sync=false async=false"
-                //  );
-                // var pipeline = (Pipeline) Parse.Launch("videotestsrc pattern=0 ! videoconvert ! timeoverlay ! d3dvideosink");
-                // var pipeline = (Pipeline) Parse.Launch("playbin uri=http://stream.iqilu.com/vod_bag_2016//2020/02/16/903BE158056C44fcA9524B118A5BF230/903BE158056C44fcA9524B118A5BF230_H264_mp4_500K.mp4");
-            };
 
             //注册消息接收器
             WeakReferenceMessenger.Default.Register<Message>(this, OnMessageHandle);
@@ -169,7 +154,7 @@ namespace GstTool
             var videoSink = ElementFactory.Make("d3dvideosink");
             var fileQueue = ElementFactory.Make("queue");
             var fileOverlayClock = ElementFactory.Make("clockoverlay");
-            var fileOverlayInfo = ElementFactory.Make("textoverlay");
+            _fileOverlayInfo = ElementFactory.Make("textoverlay");
             var fileConvert = ElementFactory.Make("videoconvert");
             var fileEncode = ElementFactory.Make("x264enc");
             var fileMux = ElementFactory.Make("mpegtsmux");
@@ -180,10 +165,9 @@ namespace GstTool
 
             if (new[]
             {
-                source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
-                _videoOverlayInfo,
-                videoConvert, videoSink, fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert, fileEncode, fileMux,
-                fileSink
+                source, sourceBuffer, sourceDepay, sourceDecode, _tee,
+                _videoQueue, _videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
+                fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink
             }.Any(element => element == null))
             {
                 Log.E("Not all elements could be created");
@@ -202,19 +186,20 @@ namespace GstTool
             _videoOverlayInfo["valignment"] = 1;
             _videoOverlayInfo["halignment"] = 0;
 
-            fileOverlayInfo["text"] =
+            _fileOverlayInfo["text"] =
                 "任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
-            fileOverlayInfo["valignment"] = 1;
-            fileOverlayInfo["halignment"] = 0;
+            _fileOverlayInfo["valignment"] = 1;
+            _fileOverlayInfo["halignment"] = 0;
 
             _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
-                _videoOverlayInfo, videoConvert, videoSink, fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert,
+                _videoOverlayInfo, videoConvert, videoSink, fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert,
                 fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
                 !Element.Link(_videoQueue, _videoOverlayInfo, _videoOverlayClock, videoConvert, videoSink) ||
-                !Element.Link(fileQueue, fileOverlayClock, fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink))
+                !Element.Link(fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux,
+                    fileSink))
             {
                 Log.E("Elements could not be linked");
                 return;
@@ -273,7 +258,14 @@ namespace GstTool
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
         {
-            _videoOverlayInfo["text"] = "清扬";
+            var date = GetDateString();
+            _videoOverlayInfo["text"] = date;
+            _fileOverlayInfo["text"] = date;
+        }
+
+        private static string GetDateString()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)

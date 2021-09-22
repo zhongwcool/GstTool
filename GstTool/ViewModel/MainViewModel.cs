@@ -10,15 +10,15 @@ namespace GstTool.ViewModel
     {
         private static MainViewModel _instance;
 
-        public RelayCommand<string> CommandPlayStream => new Lazy<RelayCommand<string>>(
-            () => new RelayCommand<string>(OnPlayStream)
-        ).Value;
-
         public static MainViewModel CreateInstance()
         {
             _instance ??= new MainViewModel();
             return _instance;
         }
+
+        public RelayCommand<string> CommandPlayStream => new Lazy<RelayCommand<string>>(
+            () => new RelayCommand<string>(OnPlayStream)
+        ).Value;
 
         private static void OnPlayStream(string msg)
         {

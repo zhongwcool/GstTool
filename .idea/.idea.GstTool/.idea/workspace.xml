@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GstTool/FastWindow.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GstTool/ViewModel/FastViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Model/Message.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Model/Message.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Utils/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +35,11 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/App.xaml" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99555a5342934374869fc6551e03594735600/92/bb960e96/RedirectedWindow.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/App.xaml" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8f9a7ea347a44ffdad6c91b550598ccd52e178/e9/b347e662/String.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -141,7 +147,8 @@
       <workItem from="1631753684088" duration="785000" />
       <workItem from="1631755291661" duration="13777000" />
       <workItem from="1631839656522" duration="11639000" />
-      <workItem from="1631926973515" duration="4915000" />
+      <workItem from="1631926973515" duration="8361000" />
+      <workItem from="1632272813734" duration="20111000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -262,7 +269,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631696947453</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="增加录制textoverlay到文件">
+      <created>1631949106044</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1631949106044</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,9 +318,9 @@
     <MESSAGE value="调整目录结构" />
     <MESSAGE value="使用Microsoft.Toolkit.Mvvm替换MvvmLight" />
     <MESSAGE value="增加录制屏幕文字到文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加录制屏幕文字到文件" />
+    <MESSAGE value="增加录制textoverlay到文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加录制textoverlay到文件" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
-    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>
