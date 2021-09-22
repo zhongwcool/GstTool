@@ -182,13 +182,13 @@ namespace GstTool
             fileQueue["leaky"] = 1;
 
             _videoOverlayInfo["text"] =
-                "任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
-            _videoOverlayInfo["valignment"] = 1;
+                "检测信息：\n任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            _videoOverlayInfo["valignment"] = 0;
             _videoOverlayInfo["halignment"] = 0;
 
             _fileOverlayInfo["text"] =
-                "任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
-            _fileOverlayInfo["valignment"] = 1;
+                "检测信息：\n任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            _fileOverlayInfo["valignment"] = 0;
             _fileOverlayInfo["halignment"] = 0;
 
             _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,

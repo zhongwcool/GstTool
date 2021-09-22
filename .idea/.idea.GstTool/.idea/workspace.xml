@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GstTool/FastWindow.xaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GstTool/ViewModel/FastViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/App.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/App.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/FastWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/FastWindow.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/ViewModel/MainViewModel.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +145,7 @@
       <workItem from="1631755291661" duration="13777000" />
       <workItem from="1631839656522" duration="11639000" />
       <workItem from="1631926973515" duration="8361000" />
-      <workItem from="1632272813734" duration="20111000" />
+      <workItem from="1632272813734" duration="25911000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -276,7 +273,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631949106044</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="增加快速演示窗口">
+      <created>1632299401846</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1632299401846</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,7 +323,8 @@
     <MESSAGE value="使用Microsoft.Toolkit.Mvvm替换MvvmLight" />
     <MESSAGE value="增加录制屏幕文字到文件" />
     <MESSAGE value="增加录制textoverlay到文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加录制textoverlay到文件" />
+    <MESSAGE value="增加快速演示窗口" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加快速演示窗口" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
