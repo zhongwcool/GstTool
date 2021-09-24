@@ -25,11 +25,13 @@
 
             <StackPanel Grid.Row="1">
                 <Button x:Name="ButtonPrepare" Content="播放" Height="100" Command="{Binding CommandPlayStream}" />
-                <UniformGrid>
+                <UniformGrid Columns="2">
                     <Button Content="Test" Height="30" Click="ButtonTest_OnClick" />
                     <Button Content="截图" Height="30" Click="ButtonShot_OnClick" />
                     <Button Content="Unlink" Height="30" Click="ButtonUnlink_OnClick" x:Name="ButtonUnlink" />
                     <Button Content="Link" Height="30" Click="ButtonLink_OnClick" x:Name="ButtonLink" IsEnabled="False" />
+                    <Button Content="任务" Height="30" Click="ButtonTask_OnClick" />
+                    <Button Content="日期" Height="30" Click="ButtonDate_OnClick" />
                 </UniformGrid>
             </StackPanel>
         </Grid>

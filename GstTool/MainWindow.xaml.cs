@@ -181,15 +181,15 @@ namespace GstTool
             _videoQueue["leaky"] = 1;
             fileQueue["leaky"] = 1;
 
-            _videoOverlayInfo["text"] =
-                "检测信息：\n任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            _videoOverlayInfo["text"] = "蛟视科技";
             _videoOverlayInfo["valignment"] = 0;
             _videoOverlayInfo["halignment"] = 0;
+            _videoOverlayInfo["line-alignment"] = 0;
 
-            _fileOverlayInfo["text"] =
-                "检测信息：\n任务名称：CCTV检测\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼\n检测地点：星湖街328号9栋6楼";
+            _fileOverlayInfo["text"] = "蛟视科技";
             _fileOverlayInfo["valignment"] = 0;
             _fileOverlayInfo["halignment"] = 0;
+            _fileOverlayInfo["line-alignment"] = 0;
 
             _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
                 _videoOverlayInfo, videoConvert, videoSink, fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert,
@@ -258,14 +258,6 @@ namespace GstTool
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
         {
-            var date = GetDateString();
-            _videoOverlayInfo["text"] = date;
-            _fileOverlayInfo["text"] = date;
-        }
-
-        private static string GetDateString()
-        {
-            return DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)
@@ -291,6 +283,37 @@ namespace GstTool
 
             ButtonUnlink.IsEnabled = true;
             ButtonLink.IsEnabled = false;
+        }
+
+        private void ButtonTask_OnClick(object sender, RoutedEventArgs e)
+        {
+            var renWu = "CCTV检测";
+            var fangXiang = "顺向";
+            var diDian = "星湖街328号";
+            var riQi = "2021年03月16日";
+            var qiShiJingHao = "未填写";
+            var zhongZhiJingHao = "未填写";
+            var guanJing = "300mm";
+            var guanCai = "未填写";
+            var guanDaoLeiXing = "WS污水管道";
+            var jianCeDanWei = "苏州蛟视管道检测技术有限公司";
+            var jianCeYuan = "Alex";
+            var task =
+                $"任务名称：{renWu}\n检测方向：{fangXiang}\n检测地点：{diDian}\n检测日期：{riQi}\n起始井号：{qiShiJingHao}\n终止井号：{zhongZhiJingHao}\n管        径：{guanJing}\n管        材：{guanCai}\n管道类型：{guanDaoLeiXing}\n检测单位：{jianCeDanWei}\n检测    员：{jianCeYuan}";
+            _videoOverlayInfo["text"] = task;
+            _fileOverlayInfo["text"] = task;
+        }
+
+        private void ButtonDate_OnClick(object sender, RoutedEventArgs e)
+        {
+            var date = GetDateString();
+            _videoOverlayInfo["text"] = date;
+            _fileOverlayInfo["text"] = date;
+        }
+
+        private static string GetDateString()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
         }
     }
 }
