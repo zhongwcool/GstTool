@@ -33,7 +33,6 @@ namespace GstTool
         private Element _tee;
         private Pad _teeVideoPad;
         private Element _videoQueue;
-        private Element _videoOverlayClock;
         private Element _videoOverlayInfo;
         private Element _fileOverlayInfo;
 
@@ -154,7 +153,7 @@ namespace GstTool
             var sourceDecode = ElementFactory.Make("decodebin");
             _tee = ElementFactory.Make("tee");
             _videoQueue = ElementFactory.Make("queue");
-            _videoOverlayClock = ElementFactory.Make("clockoverlay");
+            var videoOverlayClock = ElementFactory.Make("clockoverlay");
             _videoOverlayInfo = ElementFactory.Make("textoverlay");
             var videoConvert = ElementFactory.Make("videoconvert");
             var videoSink = ElementFactory.Make("d3dvideosink");
@@ -172,7 +171,7 @@ namespace GstTool
             if (new[]
             {
                 source, sourceBuffer, sourceDepay, sourceDecode, _tee,
-                _videoQueue, _videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
+                _videoQueue, videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
                 fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink
             }.Any(element => element == null))
             {
@@ -197,13 +196,13 @@ namespace GstTool
             _fileOverlayInfo["halignment"] = 0;
             _fileOverlayInfo["line-alignment"] = 0;
 
-            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee, _videoQueue, _videoOverlayClock,
-                _videoOverlayInfo, videoConvert, videoSink, fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert,
-                fileEncode, fileMux, fileSink);
+            _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee,
+                _videoQueue, videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
+                fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
-                !Element.Link(_videoQueue, _videoOverlayInfo, _videoOverlayClock, videoConvert, videoSink) ||
+                !Element.Link(_videoQueue, _videoOverlayInfo, videoOverlayClock, videoConvert, videoSink) ||
                 !Element.Link(fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux,
                     fileSink))
             {
@@ -334,8 +333,8 @@ namespace GstTool
                 timer.Tick += (_, _) =>
                 {
                     var date = GetDateString();
-                    _videoOverlayInfo["text"] = date;
-                    _fileOverlayInfo["text"] = date;
+                    _videoOverlayInfo["text"] = $"{date} {qiShiJingHao}-{zhongZhiJingHao} ({fangXiang})";
+                    _fileOverlayInfo["text"] = $"{date} {qiShiJingHao}-{zhongZhiJingHao} ({fangXiang})";
 
                     timer.Stop();
                     timer = null;
