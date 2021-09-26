@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 using GLib;
 using Gst;
 using Gst.Video;
@@ -133,6 +135,10 @@ namespace GstTool
                     if (newState == State.Paused) args.RetVal = false;
                     Log.D($"链路状态 from {Element.StateGetName(oldState)} " +
                           $"to {Element.StateGetName(newState)}; Pending: {Element.StateGetName(pendingState)}");
+                    break;
+                case MessageType.StreamStart:
+                    Log.D("!!! StreamStart");
+                    ShowTaskInfo();
                     break;
             }
 
@@ -287,21 +293,54 @@ namespace GstTool
 
         private void ButtonTask_OnClick(object sender, RoutedEventArgs e)
         {
-            var renWu = "CCTV检测";
-            var fangXiang = "顺向";
-            var diDian = "星湖街328号";
-            var riQi = "2021年03月16日";
-            var qiShiJingHao = "未填写";
-            var zhongZhiJingHao = "未填写";
-            var guanJing = "300mm";
-            var guanCai = "未填写";
-            var guanDaoLeiXing = "WS污水管道";
-            var jianCeDanWei = "苏州蛟视管道检测技术有限公司";
-            var jianCeYuan = "Alex";
-            var task =
-                $"任务名称：{renWu}\n检测方向：{fangXiang}\n检测地点：{diDian}\n检测日期：{riQi}\n起始井号：{qiShiJingHao}\n终止井号：{zhongZhiJingHao}\n管        径：{guanJing}\n管        材：{guanCai}\n管道类型：{guanDaoLeiXing}\n检测单位：{jianCeDanWei}\n检测    员：{jianCeYuan}";
-            _videoOverlayInfo["text"] = task;
-            _fileOverlayInfo["text"] = task;
+            ShowTaskInfo();
+        }
+
+        private void ShowTaskInfo()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var renWu = "CCTV检测";
+                var fangXiang = "顺向";
+                var diDian = "星湖街328号";
+                var riQi = "2021年03月16日";
+                var qiShiJingHao = "未填写";
+                var zhongZhiJingHao = "未填写";
+                var guanJing = "300mm";
+                var guanCai = "未填写";
+                var guanDaoLeiXing = "WS污水管道";
+                var jianCeDanWei = "苏州蛟视管道检测技术有限公司";
+                var jianCeYuan = "Alex";
+                var task =
+                    $"任务名称：{renWu}\n" +
+                    $"检测方向：{fangXiang}\n" +
+                    $"检测地点：{diDian}\n" +
+                    $"检测日期：{riQi}\n" +
+                    $"起始井号：{qiShiJingHao}\n" +
+                    $"终止井号：{zhongZhiJingHao}\n" +
+                    $"管        径：{guanJing}\n" +
+                    $"管        材：{guanCai}\n" +
+                    $"管道类型：{guanDaoLeiXing}\n" +
+                    $"检测单位：{jianCeDanWei}\n" +
+                    $"检测    员：{jianCeYuan}";
+                _videoOverlayInfo["text"] = task;
+                _fileOverlayInfo["text"] = task;
+
+                var timer = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromSeconds(20)
+                };
+                timer.Start();
+                timer.Tick += (_, _) =>
+                {
+                    var date = GetDateString();
+                    _videoOverlayInfo["text"] = date;
+                    _fileOverlayInfo["text"] = date;
+
+                    timer.Stop();
+                    timer = null;
+                };
+            });
         }
 
         private void ButtonDate_OnClick(object sender, RoutedEventArgs e)
