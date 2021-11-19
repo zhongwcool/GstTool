@@ -26,11 +26,19 @@ namespace GstTool
         private readonly MainLoop _mainLoop;
         private Pipeline _pipeline;
         private Pad _queueVideoPad;
+        private Pad _queueFilePad;
         private Element _tee;
         private Pad _teeVideoPad;
+        private Pad _teeFilePad;
         private Element _videoQueue;
         private Element _videoOverlayInfo;
         private Element _fileOverlayInfo;
+        private Element _fileQueue;
+        private Element _fileOverlayClock;
+        private Element _fileConvert;
+        private Element _fileEncode;
+        private Element _fileMux;
+        private Element _fileSink;
 
         public MainWindow()
         {
@@ -54,7 +62,7 @@ namespace GstTool
             switch (message.Key)
             {
                 case Message.PlayStream:
-                    OnPlayStream(message.Msg);
+                    OnPlayStream();
                     break;
             }
         }
@@ -68,7 +76,7 @@ namespace GstTool
             base.OnClosed(e);
         }
 
-        private void OnPlayStream(string msg)
+        private void OnPlayStream()
         {
             PlayStream();
         }
@@ -153,13 +161,13 @@ namespace GstTool
             _videoOverlayInfo = ElementFactory.Make("textoverlay");
             var videoConvert = ElementFactory.Make("videoconvert");
             var videoSink = ElementFactory.Make("d3dvideosink");
-            var fileQueue = ElementFactory.Make("queue");
-            var fileOverlayClock = ElementFactory.Make("clockoverlay");
+            _fileQueue = ElementFactory.Make("queue");
+            _fileOverlayClock = ElementFactory.Make("clockoverlay");
             _fileOverlayInfo = ElementFactory.Make("textoverlay");
-            var fileConvert = ElementFactory.Make("videoconvert");
-            var fileEncode = ElementFactory.Make("x264enc");
-            var fileMux = ElementFactory.Make("mpegtsmux");
-            var fileSink = ElementFactory.Make("filesink");
+            _fileConvert = ElementFactory.Make("videoconvert");
+            _fileEncode = ElementFactory.Make("x264enc");
+            _fileMux = ElementFactory.Make("mpegtsmux");
+            _fileSink = ElementFactory.Make("filesink");
 
             /* Create the empty pipeline */
             _pipeline = new Pipeline("test-pipeline");
@@ -168,7 +176,7 @@ namespace GstTool
             {
                 source, sourceBuffer, sourceDepay, sourceDecode, _tee,
                 _videoQueue, videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
-                fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink
+                _fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux, _fileSink
             }.Any(element => element == null))
             {
                 Log.E("Not all elements could be created");
@@ -176,11 +184,11 @@ namespace GstTool
             }
 
             source["caps"] = new Caps("application/x-rtp");
-            fileSink["location"] = FileUtil.GetRecordFilename();
+            _fileSink["location"] = FileUtil.GetRecordFilename();
             videoSink["sync"] = false;
             videoSink["async"] = false;
             _videoQueue["leaky"] = 1;
-            fileQueue["leaky"] = 1;
+            _fileQueue["leaky"] = 1;
 
             _videoOverlayInfo["text"] = "蛟视科技";
             _videoOverlayInfo["valignment"] = 0;
@@ -194,13 +202,13 @@ namespace GstTool
 
             _pipeline.Add(source, sourceBuffer, sourceDepay, sourceDecode, _tee,
                 _videoQueue, videoOverlayClock, _videoOverlayInfo, videoConvert, videoSink,
-                fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux, fileSink);
+                _fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux, _fileSink);
 
             /* Link all elements that can be automatically linked because they have "Always" pads */
             if (!Element.Link(source, sourceBuffer, sourceDepay, sourceDecode) ||
                 !Element.Link(_videoQueue, _videoOverlayInfo, videoOverlayClock, videoConvert, videoSink) ||
-                !Element.Link(fileQueue, fileOverlayClock, _fileOverlayInfo, fileConvert, fileEncode, fileMux,
-                    fileSink))
+                !Element.Link(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                    _fileSink))
             {
                 Log.E("Elements could not be linked");
                 return;
@@ -210,14 +218,14 @@ namespace GstTool
 
             _teeVideoPad = _tee.GetRequestPad("src_%u");
             Log.D($"Obtained request pad {_teeVideoPad.Name} for video branch.");
-            var teeFilePad = _tee.GetRequestPad("src_%u"); // from gst-inspect
-            Log.D($"Obtained request pad {teeFilePad.Name} for file branch.");
+            _teeFilePad = _tee.GetRequestPad("src_%u"); // from gst-inspect
+            Log.D($"Obtained request pad {_teeFilePad.Name} for file branch.");
 
             _queueVideoPad = _videoQueue.GetStaticPad("sink");
-            var queueFilePad = fileQueue.GetStaticPad("sink");
+            _queueFilePad = _fileQueue.GetStaticPad("sink");
 
             if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok ||
-                teeFilePad.Link(queueFilePad) != PadLinkReturn.Ok)
+                _teeFilePad.Link(_queueFilePad) != PadLinkReturn.Ok)
             {
                 Log.E("Tee could not be linked");
                 return;
@@ -256,12 +264,21 @@ namespace GstTool
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!_teeVideoPad.Unlink(_queueVideoPad))
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Null);
+            if (!_teeFilePad.Unlink(_queueFilePad))
             {
                 MessageBox.Show("Failed to Unlink Video Pad.");
                 ButtonLink.IsEnabled = false;
                 return;
             }
+
+            Element.Unlink(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink);
+
+            //_pipeline.Remove(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux, _fileSink);
+
+            //_pipeline.SetState(State.Playing);
 
             ButtonLink.IsEnabled = true;
             ButtonUnlink.IsEnabled = false;
@@ -269,11 +286,23 @@ namespace GstTool
 
         private void ButtonLink_OnClick(object sender, RoutedEventArgs e)
         {
-            if (_teeVideoPad.Link(_queueVideoPad) != PadLinkReturn.Ok)
+            _fileSink["location"] = FileUtil.GetRecordFilename();
+            if (!Element.Link(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink))
+            {
+                Log.E("Elements could not be linked");
+                return;
+            }
+
+            _queueFilePad = _fileQueue.GetStaticPad("sink");
+
+            if (_teeFilePad.Link(_queueFilePad) != PadLinkReturn.Ok)
             {
                 MessageBox.Show("Failed to Link Video Pad.");
                 return;
             }
+
+            _pipeline.SetState(State.Playing);
 
             ButtonUnlink.IsEnabled = true;
             ButtonLink.IsEnabled = false;
