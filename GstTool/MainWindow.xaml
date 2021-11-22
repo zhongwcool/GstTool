@@ -32,6 +32,8 @@
                     <Button Content="Link" Height="30" Click="ButtonLink_OnClick" x:Name="ButtonLink" IsEnabled="False" />
                     <Button Content="显示任务" Height="30" Click="ButtonTask_OnClick" />
                     <Button Content="显示日期" Height="30" Click="ButtonDate_OnClick" />
+                    <Button Content="停止录制" Height="30" Click="ButtonRecordStop_OnClick" x:Name="ButtonRecordStop"/>
+                    <Button Content="开始录制" Height="30" Click="ButtonRecordStart_OnClick" x:Name="ButtonRecordStart" IsEnabled="False" />
                 </UniformGrid>
             </StackPanel>
         </Grid>

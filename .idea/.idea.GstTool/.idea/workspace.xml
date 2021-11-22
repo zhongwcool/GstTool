@@ -154,7 +154,7 @@
       <workItem from="1637053040203" duration="3283000" />
       <workItem from="1637199533509" duration="10861000" />
       <workItem from="1637282496592" duration="9678000" />
-      <workItem from="1637541834939" duration="1975000" />
+      <workItem from="1637541834939" duration="4193000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -331,7 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637314707813</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="实现按键分段录制">
+      <created>1637546055835</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1637546055835</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,7 +363,6 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="first commit" />
     <MESSAGE value="how to stream a camera via gst" />
     <MESSAGE value="recoding the stream while playing" />
     <MESSAGE value="动态pipeline实现" />
@@ -381,7 +387,8 @@
     <MESSAGE value="优化代码结构以使更易阅读" />
     <MESSAGE value="修改截图的实现和效果" />
     <MESSAGE value="实现视频录制的停止与重开始" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现视频录制的停止与重开始" />
+    <MESSAGE value="实现按键分段录制" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现按键分段录制" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

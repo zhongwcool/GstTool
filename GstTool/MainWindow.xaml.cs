@@ -262,6 +262,7 @@ namespace GstTool
         {
             // DO Unlink
             _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Ready);
             _pipeline.SetState(State.Null);
             if (!_teeFilePad.Unlink(_queueFilePad))
             {
@@ -289,6 +290,8 @@ namespace GstTool
                 return;
             }
 
+            _pipeline.SetState(State.Ready);
+            _pipeline.SetState(State.Paused);
             _pipeline.SetState(State.Playing);
         }
 
@@ -395,6 +398,57 @@ namespace GstTool
         private static string GetDateString()
         {
             return DateTime.Now.ToString("yyyy-MM-dd");
+        }
+
+        private void ButtonRecordStart_OnClick(object sender, RoutedEventArgs e)
+        {
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Ready);
+            _pipeline.SetState(State.Null);
+
+            _fileSink["location"] = FileUtil.GetRecordFilename();
+            if (!Element.Link(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink))
+            {
+                Log.E("Elements could not be linked");
+                return;
+            }
+
+            _queueFilePad = _fileQueue.GetStaticPad("sink");
+            if (_teeFilePad.Link(_queueFilePad) != PadLinkReturn.Ok)
+            {
+                MessageBox.Show("Failed to Link Video Pad.");
+                return;
+            }
+
+            _pipeline.SetState(State.Ready);
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Playing);
+
+            ButtonRecordStop.IsEnabled = true;
+            ButtonRecordStart.IsEnabled = false;
+        }
+
+        private void ButtonRecordStop_OnClick(object sender, RoutedEventArgs e)
+        {
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Ready);
+            _pipeline.SetState(State.Null);
+            if (!_teeFilePad.Unlink(_queueFilePad))
+            {
+                MessageBox.Show("Failed to Unlink Video Pad.");
+                ButtonLink.IsEnabled = false;
+                return;
+            }
+
+            Element.Unlink(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink);
+            _pipeline.SetState(State.Ready);
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Playing);
+
+            ButtonRecordStop.IsEnabled = false;
+            ButtonRecordStart.IsEnabled = true;
         }
     }
 }
