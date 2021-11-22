@@ -260,6 +260,36 @@ namespace GstTool
 
         private void ButtonTest_OnClick(object sender, RoutedEventArgs e)
         {
+            // DO Unlink
+            _pipeline.SetState(State.Paused);
+            _pipeline.SetState(State.Null);
+            if (!_teeFilePad.Unlink(_queueFilePad))
+            {
+                MessageBox.Show("Failed to Unlink Video Pad.");
+                ButtonLink.IsEnabled = false;
+                return;
+            }
+
+            Element.Unlink(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink);
+
+            // DO Link
+            _fileSink["location"] = FileUtil.GetRecordFilename();
+            if (!Element.Link(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
+                _fileSink))
+            {
+                Log.E("Elements could not be linked");
+                return;
+            }
+
+            _queueFilePad = _fileQueue.GetStaticPad("sink");
+            if (_teeFilePad.Link(_queueFilePad) != PadLinkReturn.Ok)
+            {
+                MessageBox.Show("Failed to Link Video Pad.");
+                return;
+            }
+
+            _pipeline.SetState(State.Playing);
         }
 
         private void ButtonUnlink_OnClick(object sender, RoutedEventArgs e)
@@ -276,10 +306,6 @@ namespace GstTool
             Element.Unlink(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
                 _fileSink);
 
-            //_pipeline.Remove(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux, _fileSink);
-
-            //_pipeline.SetState(State.Playing);
-
             ButtonLink.IsEnabled = true;
             ButtonUnlink.IsEnabled = false;
         }
@@ -295,7 +321,6 @@ namespace GstTool
             }
 
             _queueFilePad = _fileQueue.GetStaticPad("sink");
-
             if (_teeFilePad.Link(_queueFilePad) != PadLinkReturn.Ok)
             {
                 MessageBox.Show("Failed to Link Video Pad.");

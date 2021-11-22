@@ -8,9 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GstTool/Utils/ConsoleUtil.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" afterDir="false" />
     </list>
@@ -154,7 +153,8 @@
       <workItem from="1633656004460" duration="4157000" />
       <workItem from="1637053040203" duration="3283000" />
       <workItem from="1637199533509" duration="10861000" />
-      <workItem from="1637282496592" duration="8553000" />
+      <workItem from="1637282496592" duration="9678000" />
+      <workItem from="1637541834939" duration="1975000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -324,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632909536376</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="实现视频录制的停止与重开始">
+      <created>1637314707813</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1637314707813</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,27 +380,9 @@
     <MESSAGE value="实现任务信息自动显示和隐藏" />
     <MESSAGE value="优化代码结构以使更易阅读" />
     <MESSAGE value="修改截图的实现和效果" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改截图的实现和效果" />
+    <MESSAGE value="实现视频录制的停止与重开始" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现视频录制的停止与重开始" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/GstTool/MainWindow.xaml.cs</url>
-          <line>287</line>
-          <properties documentPath="D:\workspace\ri4ws\GstTool\GstTool\MainWindow.xaml.cs" initialLine="288" containingFunctionPresentation="method 'ButtonLink_OnClick'">
-            <startOffsets>
-              <option value="10922" />
-            </startOffsets>
-            <endOffsets>
-              <option value="10975" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

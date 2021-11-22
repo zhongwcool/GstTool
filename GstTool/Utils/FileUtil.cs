@@ -4,7 +4,7 @@ namespace GstTool.Utils
 {
     public static class FileUtil
     {
-        private const string TimeStampFormatFilenameRecord = "MMdd-HHmmss-fff";
+        private const string TimeStampFormatFilenameRecord = "MMdd-HHmmss";
         private const string TimeStampFormatFilenameShot = "MMdd-HHmmss-fff";
 
         public static string GetRecordFilename(string filepath = "")
