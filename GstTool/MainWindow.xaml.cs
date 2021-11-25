@@ -437,12 +437,14 @@ namespace GstTool
             if (!_teeFilePad.Unlink(_queueFilePad))
             {
                 MessageBox.Show("Failed to Unlink Video Pad.");
-                ButtonLink.IsEnabled = false;
                 return;
             }
 
             Element.Unlink(_fileQueue, _fileOverlayClock, _fileOverlayInfo, _fileConvert, _fileEncode, _fileMux,
                 _fileSink);
+            //加入这句话可以把缓存输出到文件，不知道原因
+            _fileSink["location"] = FileUtil.GetRecordFilename();
+
             _pipeline.SetState(State.Ready);
             _pipeline.SetState(State.Paused);
             _pipeline.SetState(State.Playing);

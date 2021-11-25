@@ -9,9 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/FileUtil.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +36,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99555a5342934374869fc6551e03594735600/92/bb960e96/RedirectedWindow.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8f9a7ea347a44ffdad6c91b550598ccd52e178/e9/b347e662/String.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -154,7 +154,9 @@
       <workItem from="1637053040203" duration="3283000" />
       <workItem from="1637199533509" duration="10861000" />
       <workItem from="1637282496592" duration="9678000" />
-      <workItem from="1637541834939" duration="4193000" />
+      <workItem from="1637541834939" duration="17407000" />
+      <workItem from="1637634083915" duration="1360000" />
+      <workItem from="1637803059837" duration="4668000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -338,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637546055835</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="实现录制的开关">
+      <created>1637548249850</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1637548249851</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -363,7 +372,6 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="how to stream a camera via gst" />
     <MESSAGE value="recoding the stream while playing" />
     <MESSAGE value="动态pipeline实现" />
     <MESSAGE value="动态实现udpsrc" />
@@ -388,7 +396,8 @@
     <MESSAGE value="修改截图的实现和效果" />
     <MESSAGE value="实现视频录制的停止与重开始" />
     <MESSAGE value="实现按键分段录制" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现按键分段录制" />
+    <MESSAGE value="实现录制的开关" />
+    <option name="LAST_COMMIT_MESSAGE" value="实现录制的开关" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
