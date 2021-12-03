@@ -34,7 +34,6 @@ namespace GstTool.Utils
             Console.ForegroundColor = color;
             Console.WriteLine(s);
             Console.ResetColor();
-            Log.D(s);
         }
 
         public static bool HasProperty(this ExpandoObject obj, string propertyName)

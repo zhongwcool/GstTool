@@ -24,8 +24,8 @@ namespace GstTool.Utils
         private static readonly Log Instance = new();
         private const string TimeStampFormat = "MM-dd HH:mm:ss.fff";
         private const string TimeStampFormatFilename = "yyyy-MM-dd";
-        private bool _isStart;
-        private readonly Thread _thread;
+        private bool _signaled;
+        private static EventWaitHandle _waitHandle;
         private static int _maxByteSize = 1024 * 1; //当单个缓存日志达到多少byte时写入文件
         private static int _maxFileSize = 20 * 1024 * 1024; //单个日志文件的大小
         private static int _maxMilliseconds = 10; //最大相隔时间，不管缓存区中的日志大小到不到_maxByteSize都写入硬盘
@@ -44,8 +44,10 @@ namespace GstTool.Utils
         /// </summary>
         private Log()
         {
-            _thread = new Thread(RunnableDigest) { IsBackground = true };
-            _thread.Start();
+            var token = BitConverter.ToString(BitConverter.GetBytes(DateTime.Now.Ticks));
+            _waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, token, out var createdNew);
+            var thread = new Thread(RunnableDigest);
+            thread.Start();
         }
 
         /// <param name="savePath">日志保存的基目录(全路径)，</param>
@@ -75,28 +77,22 @@ namespace GstTool.Utils
             _maxMilliseconds = maxMilliseconds;
         }
 
-        public void AgainStart()
-        {
-            Instance._isStart = true;
-        }
-
-        public static void OnExit()
+        public static void Close()
         {
             Instance.Flush();
+            _waitHandle.Set();
         }
 
         private void RunnableDigest()
         {
-            _isStart = true;
-            while (_isStart)
+            do
             {
+                _signaled = _waitHandle.WaitOne(TimeSpan.FromMilliseconds(5000));
                 if (_logModelQueue.Count > 0)
                     TransferQueue2Buffer();
-                else
-                    Thread.Sleep(50);
 
                 TrimLogBuffer();
-            }
+            } while (!_signaled);
         }
 
         private void TransferQueue2Buffer()
@@ -115,15 +111,13 @@ namespace GstTool.Utils
 
         private void TrimLogBuffer()
         {
-            //缓存日志，定期写入文件，空间换时间 避免频繁操作硬盘 造成IO开销过大       
-            var second = (DateTime.Now - _myLogBuffer.StartTime).TotalMilliseconds;
-            if (_myLogBuffer.Builder.Length > _maxByteSize || second >= _maxMilliseconds)
-            {
-                //写入日志
-                if (!Write2File(_myLogBuffer.Builder.ToString())) return;
-                _myLogBuffer.StartTime = DateTime.Now;
-                _myLogBuffer.Builder.Clear();
-            }
+            //缓存日志，定期写入文件，空间换时间 避免频繁操作硬盘 造成IO开销过大
+            var second = DateTime.Now.Subtract(_myLogBuffer.StartTime).TotalMilliseconds;
+            if (_myLogBuffer.Builder.Length <= _maxByteSize && !(second >= _maxMilliseconds)) return;
+            //写入日志
+            if (!Write2File(_myLogBuffer.Builder.ToString())) return;
+            _myLogBuffer.StartTime = DateTime.Now;
+            _myLogBuffer.Builder.Clear();
         }
 
         private void Flush()
@@ -133,15 +127,6 @@ namespace GstTool.Utils
             if (!Write2File(_myLogBuffer.Builder.ToString())) return;
             _myLogBuffer.StartTime = DateTime.Now;
             _myLogBuffer.Builder.Clear();
-        }
-
-        /// <summary>
-        /// 关闭线程
-        /// </summary>
-        public void Abort()
-        {
-            Instance._isStart = false;
-            Instance._thread.Abort();
         }
 
         public static void SetLevel(Level level)
@@ -283,7 +268,7 @@ namespace GstTool.Utils
             {
                 _currentWriteErrorTime++;
                 Thread.Sleep(10 * 1000); //暂停10秒
-                if (_currentWriteErrorTime > MaxWriteErrorTime) OnExit(); //停止写入日志，发送报警短信
+                if (_currentWriteErrorTime > MaxWriteErrorTime) Close(); //停止写入日志，发送报警短信
 
                 return false;
             }

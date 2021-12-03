@@ -9,8 +9,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d24c5d9b-69c3-4e6a-bd6f-05a551640ecd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GstTool/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/GstTool.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/GstTool.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/Utils/ConsoleUtil.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/ConsoleUtil.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GstTool/Utils/Log.cs" beforeDir="false" afterPath="$PROJECT_DIR$/GstTool/Utils/Log.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +37,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/9b/1dcf91ce/Global.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/99555a5342934374869fc6551e03594735600/92/bb960e96/RedirectedWindow.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/workspace/ri4ws/GstTool/GstTool/MainWindow.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8f9a7ea347a44ffdad6c91b550598ccd52e178/e9/b347e662/String.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8FB4530C-4736-4F10-ABE7-4964D4A1B4AC/1d/5380c7cb/Object.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -64,7 +64,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34994584" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30010834" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -156,7 +156,12 @@
       <workItem from="1637282496592" duration="9678000" />
       <workItem from="1637541834939" duration="17407000" />
       <workItem from="1637634083915" duration="1360000" />
-      <workItem from="1637803059837" duration="4668000" />
+      <workItem from="1637803059837" duration="5811000" />
+      <workItem from="1637911121396" duration="602000" />
+      <workItem from="1638254114218" duration="66000" />
+      <workItem from="1638346992284" duration="3451000" />
+      <workItem from="1638409511836" duration="12369000" />
+      <workItem from="1638492649777" duration="1652000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1622700205657</created>
@@ -347,7 +352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637548249851</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="停止录像后缓存可以到文件中">
+      <created>1637830605266</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1637830605266</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,6 +368,16 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -372,7 +394,6 @@
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="recoding the stream while playing" />
     <MESSAGE value="动态pipeline实现" />
     <MESSAGE value="动态实现udpsrc" />
     <MESSAGE value="动态tee:实现播放和录制" />
@@ -397,7 +418,8 @@
     <MESSAGE value="实现视频录制的停止与重开始" />
     <MESSAGE value="实现按键分段录制" />
     <MESSAGE value="实现录制的开关" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现录制的开关" />
+    <MESSAGE value="停止录像后缓存可以到文件中" />
+    <option name="LAST_COMMIT_MESSAGE" value="停止录像后缓存可以到文件中" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
